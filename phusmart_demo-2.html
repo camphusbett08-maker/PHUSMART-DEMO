@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhuSmart — Digital Record Of Work | Interactive Demo</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#22c55e;--green-dark:#15803d;--green-light:#dcfce7;
+  --navy:#0f172a;--navy-mid:#1e293b;--navy-light:#334155;
+  --purple:#667eea;--purple2:#764ba2;--purple-light:#ede9fe;
+  --pink:#db2777;--pink-light:#fce7f3;
+  --amber:#d97706;--amber-light:#fef3c7;
+  --blue:#2563eb;--blue-light:#dbeafe;
+  --orange:#ea580c;--orange-light:#ffedd5;
+  --red:#dc2626;--red-light:#fee2e2;
+  --slate:#64748b;--slate-light:#f1f5f9;--border:#e2e8f0;
+  --white:#fff;--radius:14px;--shadow:0 4px 24px rgba(15,23,42,.10);--shadow-lg:0 12px 48px rgba(15,23,42,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc;color:var(--navy);min-height:100vh}
+#landingPage{display:block}
+#mainApp{display:none}
+
+/* ══ LANDING ══ */
+.landing-wrap{min-height:100vh;background:var(--navy);position:relative;overflow:hidden}
+.landing-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(34,197,94,.18) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 90% 80%,rgba(102,126,234,.15) 0%,transparent 60%);pointer-events:none}
+.landing-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.lnd-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 40px;position:relative;z-index:2}
+.lnd-logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--green),#16a34a);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;box-shadow:0 0 20px rgba(34,197,94,.4)}
+.logo-text{font-size:1.25rem;font-weight:800;color:white;letter-spacing:-.3px}
+.logo-text span{color:var(--green)}
+.demo-pill{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:var(--green);padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px}
+.lnd-hero{position:relative;z-index:2;text-align:center;padding:60px 24px 40px}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:var(--green);padding:6px 16px;border-radius:30px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:28px}
+.hero-h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,6vw,4rem);color:white;line-height:1.12;margin-bottom:18px;letter-spacing:-.5px}
+.hero-h1 em{color:var(--green);font-style:italic}
+.hero-sub{color:#94a3b8;font-size:1.05rem;max-width:520px;margin:0 auto 40px;line-height:1.7}
+.value-strip{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-bottom:56px;position:relative;z-index:2}
+.val-item{display:flex;align-items:center;gap:8px;padding:10px 20px;border-right:1px solid rgba(255,255,255,.08);color:#cbd5e1;font-size:13px;font-weight:600}
+.val-item:last-child{border-right:none}
+.val-item i{color:var(--green);font-size:14px}
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:1000px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+.role-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:18px;padding:28px 22px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.role-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;border-radius:18px}
+.role-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.22);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.rc-teacher::before{background:linear-gradient(135deg,rgba(34,197,94,.12),transparent)}
+.rc-hos::before{background:linear-gradient(135deg,rgba(219,39,119,.12),transparent)}
+.rc-hod::before{background:linear-gradient(135deg,rgba(217,119,6,.12),transparent)}
+.rc-principal::before{background:linear-gradient(135deg,rgba(102,126,234,.12),transparent)}
+.rc-deputy::before{background:linear-gradient(135deg,rgba(124,58,237,.12),transparent)}
+.role-card:hover::before{opacity:1}
+.rc-icon{width:62px;height:62px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;color:white;margin:0 auto 16px;position:relative;z-index:1}
+.rci-teacher{background:linear-gradient(135deg,#22c55e,#15803d);box-shadow:0 8px 24px rgba(34,197,94,.35)}
+.rci-hos{background:linear-gradient(135deg,#db2777,#be185d);box-shadow:0 8px 24px rgba(219,39,119,.35)}
+.rci-hod{background:linear-gradient(135deg,#d97706,#b45309);box-shadow:0 8px 24px rgba(217,119,6,.35)}
+.rci-principal{background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 8px 24px rgba(102,126,234,.35)}
+.rci-deputy{background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 8px 24px rgba(124,58,237,.35)}
+.rc-title{font-size:1rem;font-weight:800;color:white;margin-bottom:6px;position:relative;z-index:1}
+.rc-desc{font-size:12px;color:#94a3b8;line-height:1.6;margin-bottom:18px;position:relative;z-index:1}
+.rc-btn{padding:9px 20px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:all .2s;position:relative;z-index:1;font-family:inherit}
+.rcb-teacher{background:rgba(34,197,94,.2);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.rcb-teacher:hover{background:var(--green);color:white}
+.rcb-hos{background:rgba(219,39,119,.2);color:#f472b6;border:1px solid rgba(219,39,119,.3)}
+.rcb-hos:hover{background:var(--pink);color:white}
+.rcb-hod{background:rgba(217,119,6,.2);color:#fbbf24;border:1px solid rgba(217,119,6,.3)}
+.rcb-hod:hover{background:var(--amber);color:white}
+.rcb-principal{background:rgba(102,126,234,.2);color:#a5b4fc;border:1px solid rgba(102,126,234,.3)}
+.rcb-principal:hover{background:var(--purple);color:white}
+.rcb-deputy{background:rgba(124,58,237,.2);color:#c4b5fd;border:1px solid rgba(124,58,237,.3)}
+.rcb-deputy:hover{background:#7c3aed;color:white}
+.features-section{position:relative;z-index:2;max-width:940px;margin:56px auto 0;padding:0 24px 56px}
+.feat-label{text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#64748b;margin-bottom:14px}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.feat-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px}
+.feat-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.feat-title{font-size:12px;font-weight:700;color:white;margin-bottom:3px}
+.feat-desc{font-size:11px;color:#64748b;line-height:1.5}
+.lnd-footer-bar{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:20px;color:#475569;font-size:12px;position:relative;z-index:2}
+.lnd-footer-bar strong{color:var(--green)}
+
+/* ══ APP SHELL ══ */
+#mainApp{min-height:100vh;background:#f1f5f9}
+.screen{display:none;animation:fadeUp .35s ease}
+.screen.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Auth ── */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--navy)}
+.auth-card{background:white;border-radius:22px;box-shadow:var(--shadow-lg);max-width:420px;width:100%;overflow:hidden}
+.ac-header{padding:32px;text-align:center}
+.ach-teacher{background:linear-gradient(135deg,#22c55e,#15803d)}
+.ach-hos{background:linear-gradient(135deg,#db2777,#be185d)}
+.ach-hod{background:linear-gradient(135deg,#d97706,#b45309)}
+.ach-principal{background:linear-gradient(135deg,#667eea,#764ba2)}
+.ach-deputy{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
+.ac-icon{width:64px;height:64px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;color:white;margin:0 auto 14px}
+.ac-header h1{color:white;font-size:1.5rem;font-weight:800;margin-bottom:4px}
+.ac-header p{color:rgba(255,255,255,.8);font-size:13px}
+.ac-school{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);padding:4px 12px;border-radius:20px;color:white;font-size:11px;font-weight:700;margin-top:10px}
+.ac-body{padding:26px 28px}
+.demo-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:#15803d;line-height:1.7}
+.demo-box b{display:block;font-size:13px;margin-bottom:3px;color:#166534}
+.fg{margin-bottom:16px}
+.fg label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy-mid);margin-bottom:6px}
+.inp{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;color:var(--navy)}
+.inp:focus{border-color:var(--purple)}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical}
+.btn-login{width:100%;padding:13px;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .25s;margin-top:4px}
+.blt{background:linear-gradient(135deg,#22c55e,#15803d);color:white}
+.blh{background:linear-gradient(135deg,#db2777,#be185d);color:white}
+.blhod{background:linear-gradient(135deg,#d97706,#b45309);color:white}
+.blp{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.bldep{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:white}
+.btn-login:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.btn-back-top{background:none;border:none;color:rgba(255,255,255,.75);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:16px 24px 0;font-family:inherit;font-weight:600;transition:color .2s}
+.btn-back-top:hover{color:white}
+
+/* ── Dashboard ── */
+.dash-page{max-width:960px;margin:0 auto;padding:20px}
+.dash-header{background:white;border-radius:16px;padding:18px 22px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);flex-wrap:wrap;gap:12px;border:1px solid var(--border)}
+.dh-left{display:flex;align-items:center;gap:14px}
+.dh-avatar{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;color:white;flex-shrink:0}
+.dva-t{background:linear-gradient(135deg,#22c55e,#15803d)}
+.dva-h{background:linear-gradient(135deg,#db2777,#be185d)}
+.dva-hod{background:linear-gradient(135deg,#d97706,#b45309)}
+.dva-p{background:linear-gradient(135deg,#667eea,#764ba2)}
+.dva-dep{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
+.dh-name{font-size:1.05rem;font-weight:800;color:var(--navy);margin-bottom:2px}
+.dh-sub{color:var(--slate);font-size:12px;margin-bottom:5px}
+.dh-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rbadge{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.rb-t{background:var(--green-light);color:var(--green-dark)}
+.rb-h{background:var(--pink-light);color:var(--pink)}
+.rb-hod{background:var(--amber-light);color:var(--amber)}
+.rb-p{background:#e0e7ff;color:#4338ca}
+.rb-dep{background:#ede9fe;color:#7c3aed}
+.school-chip{background:var(--slate-light);color:var(--slate);padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid var(--border)}
+.term-chip{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid}
+.dh-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn-sm{padding:7px 14px;border-radius:9px;border:1px solid var(--border);background:white;color:var(--slate);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;font-family:inherit}
+.btn-sm:hover{background:var(--slate-light)}
+.btn-logout{padding:7px 14px;border-radius:9px;border:1px solid var(--border);background:white;color:var(--slate);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;font-family:inherit}
+.btn-logout:hover{background:#fff1f2;border-color:#fecdd3;color:var(--red)}
+.btn-notif{position:relative;background:none;border:none;font-size:20px;color:var(--slate);cursor:pointer;padding:6px;border-radius:9px;transition:background .2s}
+.btn-notif:hover{background:var(--slate-light)}
+.notif-dot{position:absolute;top:2px;right:2px;background:var(--red);border:2px solid white;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:700;color:white;display:flex;align-items:center;justify-content:center}
+
+/* ── Stats ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stat-card{background:white;border-radius:13px;padding:16px 18px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.stat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;flex-shrink:0}
+.stat-val{font-size:1.7rem;font-weight:800;color:var(--navy);line-height:1}
+.stat-lbl{font-size:11px;color:var(--slate);margin-top:3px;font-weight:600}
+
+/* ── Action row ── */
+.action-row{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap}
+.abtn{background:white;border:1px solid var(--border);color:var(--navy-mid);padding:9px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;transition:all .2s;font-family:inherit}
+.abtn:hover{background:var(--slate-light);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.abtn.primary{background:linear-gradient(135deg,#22c55e,#15803d);color:white;border:none}
+.abtn.primary:hover{box-shadow:0 6px 18px rgba(34,197,94,.35);transform:translateY(-1px)}
+.abtn.primary-purple{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none}
+.abtn.primary-purple:hover{box-shadow:0 6px 18px rgba(102,126,234,.35);transform:translateY(-1px)}
+
+/* ── Cards ── */
+.dcard{background:white;border-radius:var(--radius);margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+.dcard-hdr{padding:15px 20px;color:white;display:flex;align-items:center;justify-content:space-between}
+.dcard-hdr h3{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.dch-green{background:linear-gradient(135deg,#22c55e,#15803d)}
+.dch-purple{background:linear-gradient(135deg,#667eea,#764ba2)}
+.dch-pink{background:linear-gradient(135deg,#db2777,#be185d)}
+.dch-amber{background:linear-gradient(135deg,#d97706,#b45309)}
+.dch-dark{background:linear-gradient(135deg,#0f172a,#1e293b)}
+.dch-orange{background:linear-gradient(135deg,#ea580c,#c2410c)}
+.btn-xcard{background:rgba(255,255,255,.2);border:none;color:white;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0}
+.btn-xcard:hover{background:rgba(255,255,255,.35)}
+.btn-hdr-sm{background:rgba(255,255,255,.2);border:none;color:white;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;font-family:inherit;transition:background .2s}
+.btn-hdr-sm:hover{background:rgba(255,255,255,.32)}
+
+/* ── Form ── */
+.form-body{padding:22px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg-label{font-size:12px;font-weight:700;color:var(--navy-mid);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.lesson-tbl{width:100%;border-collapse:collapse;border:2px solid var(--border);border-radius:10px;overflow:hidden}
+.lesson-tbl th{background:var(--slate-light);padding:10px 11px;font-size:10px;color:var(--slate);text-align:left;border-bottom:2px solid var(--border);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.lesson-tbl td{padding:5px 7px;border-top:1px solid #f1f5f9}
+.lesson-tbl input{border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;width:100%;outline:none;font-family:inherit;transition:border-color .2s;font-weight:700;color:var(--purple)}
+.lesson-tbl input.sub{font-weight:400;color:var(--navy)}
+.lesson-tbl input:focus{border-color:var(--purple)}
+.add-row-btn{background:#f0f4ff;border:1px dashed #c7d2fe;color:#4338ca;padding:8px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;font-family:inherit;transition:background .2s}
+.add-row-btn:hover{background:#e0e7ff}
+.form-actions{display:flex;gap:10px;margin-top:18px}
+.btn-submit{background:linear-gradient(135deg,#22c55e,#15803d);color:white;border:none;padding:13px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;transition:all .2s}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+.btn-draft{background:var(--slate-light);color:var(--navy-mid);border:none;padding:13px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;transition:background .2s}
+.btn-draft:hover{background:var(--border)}
+
+/* ── Curriculum toggle ── */
+.curr-toggle{display:flex;gap:0;border:2px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.curr-btn{flex:1;padding:9px;border:none;background:white;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--slate);font-family:inherit}
+.curr-btn.a844{background:var(--purple);color:white}
+.curr-btn.acbc{background:#15803d;color:white}
+
+/* ── Subject pills ── */
+.subj-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.spill{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all .2s;color:white;opacity:.7}
+.spill.active{opacity:1;box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 0 5px currentColor;transform:scale(1.05)}
+
+/* ── Tables ── */
+.ovx{overflow-x:auto}
+.rec-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.rec-tbl th{padding:9px 14px;text-align:left;background:var(--slate-light);color:var(--slate);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap}
+.rec-tbl td{padding:12px 14px;border-bottom:1px solid #f8fafc;color:var(--navy-mid);vertical-align:middle}
+.rec-tbl tr:last-child td{border-bottom:none}
+.rec-tbl tr:hover td{background:#fafbff}
+
+.cons-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:720px}
+.cons-tbl .form-hdr td{background:var(--navy);color:white;padding:8px 14px;font-weight:700;font-size:12px;border-top:3px solid var(--purple)}
+.cons-tbl thead th{background:#f0f4ff;color:#4338ca;padding:8px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #c7d2fe;text-align:left;white-space:nowrap}
+.cons-tbl td{padding:10px 12px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.cons-tbl .cls-cell{font-weight:800;color:var(--navy);border-right:3px solid var(--purple);white-space:nowrap}
+.cons-tbl .tchr-cell{font-weight:600;color:var(--navy-mid);border-right:1px solid var(--border);white-space:nowrap}
+.ls-badge{display:inline-flex;align-items:center;justify-content:center;background:#e0e7ff;color:var(--purple);border-radius:50%;width:22px;height:22px;font-size:11px;font-weight:800}
+.alt-row td{background:#fafbff}
+.dash-row td{border-top:1px dashed #e0e0e0!important;border-bottom:none}
+
+.staff-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.staff-tbl th{padding:10px 14px;background:var(--navy-mid);color:white;font-size:10px;text-align:left;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.staff-tbl td{padding:11px 14px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.staff-tbl tr:nth-child(even) td{background:#f8fafc}
+.staff-tbl tr:hover td{background:#f0f4ff}
+.mono{font-family:monospace;color:var(--blue);font-size:12px;font-weight:700}
+
+/* ── Status badges ── */
+.sbadge{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.sb-pending{background:var(--amber-light);color:var(--amber)}
+.sb-reviewed{background:var(--blue-light);color:var(--blue)}
+.sb-done{background:var(--green-light);color:var(--green-dark)}
+.sb-forwarded{background:var(--purple-light);color:#7c3aed}
+.sb-missing{background:var(--red-light);color:var(--red)}
+.sb-complete{background:var(--green-light);color:var(--green-dark)}
+.sb-inreview{background:var(--blue-light);color:var(--blue)}
+.sb-incomplete{background:var(--amber-light);color:var(--amber)}
+.sb-draft{background:#f8fafc;color:var(--slate);border:1px solid var(--border)}
+.cbadge{padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;letter-spacing:.2px}
+.cb-844{background:#e0e7ff;color:#4338ca}
+.cb-cbc{background:var(--green-light);color:var(--green-dark)}
+
+/* ── Coverage bars ── */
+.cov-item{padding:13px 20px;border-bottom:1px solid #f1f5f9}
+.cov-item:last-child{border-bottom:none}
+.cov-label{display:flex;justify-content:space-between;margin-bottom:7px;font-size:13px;font-weight:600;color:var(--navy-mid)}
+.cov-bar-bg{height:9px;background:var(--border);border-radius:10px;overflow:hidden}
+.cov-bar{height:100%;border-radius:10px;transition:width .8s ease}
+.cov-high{background:linear-gradient(90deg,#22c55e,#86efac)}
+.cov-mid{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.cov-low{background:linear-gradient(90deg,#dc2626,#f87171)}
+.mini-bar{width:70px;height:7px;background:var(--border);border-radius:6px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:5px}
+.mini-fill{height:100%;border-radius:6px}
+
+/* ── Remarks ── */
+.remark-item{padding:16px 20px;border-bottom:1px solid #f8fafc}
+.remark-item:last-child{border-bottom:none}
+.remark-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:4px}
+.remark-who{font-weight:800;font-size:13px;color:var(--navy)}
+.remark-date{font-size:11px;color:#94a3b8;font-weight:600}
+.remark-body{color:var(--navy-mid);font-size:13px;background:var(--slate-light);padding:10px 13px;border-radius:9px;border-left:3px solid var(--purple);line-height:1.6}
+.remark-body.pos{border-left-color:var(--green)}
+.remark-body.warn{border-left-color:var(--amber)}
+
+/* ── Week tabs ── */
+.week-tabs-bar{display:flex;gap:6px;padding:14px 18px 0;flex-wrap:wrap;background:white;border-radius:14px 14px 0 0;border-bottom:1px solid var(--border)}
+.wtab{padding:7px 15px;border-radius:8px 8px 0 0;border:none;background:transparent;font-size:12px;font-weight:700;cursor:pointer;color:var(--slate);transition:all .2s;margin-bottom:-1px;font-family:inherit}
+.wtab.active{background:white;color:var(--purple);border:1px solid var(--border);border-bottom:1px solid white;box-shadow:0 -2px 0 var(--purple) inset}
+.wtab:hover:not(.active){color:var(--navy-mid);background:var(--slate-light)}
+.week-tab-body{background:white;border-radius:0 0 14px 14px;box-shadow:var(--shadow);margin-bottom:14px;border:1px solid var(--border);border-top:none}
+
+/* ── Principal ── */
+.p-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:16px}
+.p-kpi-card{background:white;border-radius:14px;padding:18px 16px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
+.p-kpi-card::before{content:'';position:absolute;top:0;right:0;width:70px;height:70px;border-radius:50%;opacity:.08;transform:translate(20px,-20px)}
+.p-kpi-green::before{background:var(--green)}
+.p-kpi-orange::before{background:var(--amber)}
+.p-kpi-blue::before{background:var(--blue)}
+.p-kpi-purple::before{background:var(--purple)}
+.p-kpi-red::before{background:var(--red)}
+.p-kpi-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:white;margin-bottom:10px}
+.p-icon-green{background:linear-gradient(135deg,#22c55e,#15803d)}
+.p-icon-orange{background:linear-gradient(135deg,#d97706,#b45309)}
+.p-icon-blue{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+.p-icon-purple{background:linear-gradient(135deg,#667eea,#764ba2)}
+.p-icon-red{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+.p-kpi-value{font-size:1.8rem;font-weight:800;color:var(--navy);line-height:1;margin-bottom:4px}
+.p-kpi-label{font-size:12px;color:var(--slate);font-weight:600}
+.p-kpi-sub{font-size:11px;color:#94a3b8;margin-top:3px}
+.p-nav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:20px}
+.p-nav-btn{background:white;border:1px solid rgba(0,0,0,.08);border-bottom:5px solid;border-radius:14px;padding:20px 12px 16px;box-shadow:0 4px 0 rgba(0,0,0,.10),0 6px 16px rgba(0,0,0,.07);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;transition:transform .12s,box-shadow .12s;font-family:inherit}
+.p-nav-btn:hover{transform:translateY(-3px);box-shadow:0 7px 0 rgba(0,0,0,.10),0 10px 20px rgba(0,0,0,.10)}
+.p-nav-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.10)}
+.p-nav-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.p-nav-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.p-nav-sub{font-size:10px;color:var(--slate)}
+.compliance-ring-card{background:white;border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;min-width:160px}
+.p-section{display:none;margin-top:4px}
+.p-section.open{display:block}
+.p-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.p-section-title{font-size:15px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px}
+.p-back-btn{background:white;border:1px solid var(--border);border-bottom:3px solid #b0b8d0;border-radius:10px;padding:8px 18px;font-size:13px;font-weight:700;color:var(--slate);cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;transition:all .12s}
+.p-back-btn:hover{background:var(--slate-light);transform:translateY(-1px)}
+.dept-health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.dept-card{background:white;border-radius:14px;padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);border-left:4px solid var(--purple)}
+.dept-card-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.dept-card-meta{font-size:11px;color:var(--slate);margin-bottom:12px}
+.p-header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px rgba(102,126,234,.3);flex-wrap:wrap;gap:12px}
+.p-header-left{display:flex;align-items:center;gap:15px}
+.p-header-avatar{width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.p-header-name{font-size:1.2rem;font-weight:700;margin-bottom:3px}
+.p-filter-bar{background:white;border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.p-body{padding:24px 28px;max-width:1100px;margin:0 auto}
+.fsel{border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-size:12px;background:white;color:var(--navy-mid);cursor:pointer;outline:none;font-family:inherit;font-weight:600}
+.subj-btn-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.subj-btn{padding:9px 18px;border-radius:10px;border:2px solid var(--border);background:white;font-size:13px;font-weight:700;cursor:pointer;color:var(--navy-mid);transition:all .2s;font-family:inherit}
+.subj-btn:hover,.subj-btn.active{background:var(--purple);color:white;border-color:var(--purple)}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:white;border-radius:18px;overflow:hidden;width:100%;max-width:480px;box-shadow:0 24px 64px rgba(0,0,0,.35);animation:fadeUp .3s}
+.modal-hdr{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.modal-hdr h3{font-size:14px;font-weight:700}
+.modal-body{padding:22px}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.btn-msave{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;padding:9px 22px;border-radius:9px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit}
+.btn-mcancel{background:var(--slate-light);color:var(--slate);border:none;padding:9px 22px;border-radius:9px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit}
+.btn-msave:hover{opacity:.9}
+.btn-mcancel:hover{background:var(--border)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;right:24px;color:white;padding:13px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.3);display:none;max-width:340px;animation:slideUp .3s}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.toast-success{background:var(--green-dark)}
+.toast-info{background:var(--blue)}
+.toast-warn{background:var(--amber)}
+.toast-error{background:var(--red)}
+.empty-state{padding:40px;text-align:center;color:#94a3b8}
+.empty-state i{font-size:36px;margin-bottom:10px;display:block;opacity:.35}
+
+@media(max-width:600px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .form-row-2{grid-template-columns:1fr}
+  .action-row{flex-direction:column}
+  .role-grid{grid-template-columns:1fr 1fr}
+  .val-item{padding:8px 12px;font-size:11px}
+  .lnd-nav{padding:16px 20px}
+  .p-body{padding:16px}
+  .p-header{padding:16px 20px}
+  .p-filter-bar{padding:10px 16px}
+  .p-kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .dash-page{padding:12px}
+  .p-nav-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ LANDING PAGE ═══════════════════ -->
+<div id="landingPage">
+<div class="landing-wrap">
+  <div class="landing-bg"></div>
+  <div class="landing-grid"></div>
+  <div class="lnd-nav">
+    <div class="lnd-logo">
+      <div class="logo-mark">📚</div>
+      <div class="logo-text">Phu<span>Smart</span></div>
+    </div>
+    <div class="demo-pill"><i class="fas fa-flask"></i> &nbsp;INTERACTIVE DEMO</div>
+  </div>
+  <div class="lnd-hero">
+    <div class="hero-tag"><i class="fas fa-bolt"></i> Kenya's Digital Record of Work Platform</div>
+    <h1 class="hero-h1">Paperless. Accountable.<br><em>Instant.</em></h1>
+    <p class="hero-sub">PhuSmart replaces paper record of work books with a structured, real-time digital system — built specifically for Kenyan high schools running 8-4-4 and CBC.</p>
+  </div>
+  <div class="value-strip">
+    <div class="val-item"><i class="fas fa-check-circle"></i> No more paper files</div>
+    <div class="val-item"><i class="fas fa-check-circle"></i> Real-time submission tracking</div>
+    <div class="val-item"><i class="fas fa-check-circle"></i> Supports 8-4-4 &amp; CBC</div>
+    <div class="val-item"><i class="fas fa-check-circle"></i> Instant HOS remarks</div>
+    <div class="val-item"><i class="fas fa-check-circle"></i> Works on any device</div>
+  </div>
+  <div class="role-grid">
+    <div class="role-card rc-teacher" onclick="showLogin('teacher')">
+      <div class="rc-icon rci-teacher"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div class="rc-title">Teacher</div>
+      <div class="rc-desc">Submit weekly 8-4-4 &amp; CBC records, track syllabus coverage, and get remarks from your HOS</div>
+      <button class="rc-btn rcb-teacher">Explore as Teacher →</button>
+    </div>
+    <div class="role-card rc-hos" onclick="showLogin('hos')">
+      <div class="rc-icon rci-hos"><i class="fas fa-user-tie"></i></div>
+      <div class="rc-title">Head of Subject</div>
+      <div class="rc-desc">Review teacher submissions week by week, add professional remarks, and manage topics</div>
+      <button class="rc-btn rcb-hos">Explore as HOS →</button>
+    </div>
+    <div class="role-card rc-hod" onclick="showLogin('hod')">
+      <div class="rc-icon rci-hod"><i class="fas fa-user-graduate"></i></div>
+      <div class="rc-title">Head of Dept.</div>
+      <div class="rc-desc">Oversee all subjects in your department, drill into coverage, and spot compliance gaps</div>
+      <button class="rc-btn rcb-hod">Explore as HOD →</button>
+    </div>
+    <div class="role-card rc-principal" onclick="showLogin('principal')">
+      <div class="rc-icon rci-principal"><i class="fas fa-school"></i></div>
+      <div class="rc-title">Principal</div>
+      <div class="rc-desc">School-wide overview — KPI cards, compliance ring, staff directory, syllabus and backup</div>
+      <button class="rc-btn rcb-principal">Explore as Principal →</button>
+    </div>
+    <div class="role-card rc-deputy" onclick="showLogin('deputy')">
+      <div class="rc-icon rci-deputy"><i class="fas fa-user-tie"></i></div>
+      <div class="rc-title">Deputy Principal</div>
+      <div class="rc-desc">Same school-wide access as Principal — records, departments, syllabus, and staff overview</div>
+      <button class="rc-btn rcb-deputy">Explore as Deputy →</button>
+    </div>
+  </div>
+  <div class="features-section">
+    <div class="feat-label">Key Features</div>
+    <div class="feat-grid">
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#e0e7ff"><i class="fas fa-file-alt" style="color:#4338ca"></i></div>
+        <div><div class="feat-title">Structured Weekly Forms</div><div class="feat-desc">Separate 8-4-4 and CBC forms — topics, lessons, subtopics, strands</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#dcfce7"><i class="fas fa-chart-bar" style="color:#15803d"></i></div>
+        <div><div class="feat-title">Syllabus Coverage Tracker</div><div class="feat-desc">Visual progress bars per class — see who is on track at a glance</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#fce7f3"><i class="fas fa-comments" style="color:#db2777"></i></div>
+        <div><div class="feat-title">HOS Remarks System</div><div class="feat-desc">Head of Subject reviews records and adds remarks — teachers see feedback instantly</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#dbeafe"><i class="fas fa-layer-group" style="color:#2563eb"></i></div>
+        <div><div class="feat-title">Multi-Level Oversight</div><div class="feat-desc">Teacher → HOS → HOD → Principal accountability chain built in</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#fef3c7"><i class="fas fa-save" style="color:#d97706"></i></div>
+        <div><div class="feat-title">Draft &amp; Submit</div><div class="feat-desc">Save drafts and complete later — no work is ever lost</div></div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-ico" style="background:#f0fdf4"><i class="fas fa-mobile-alt" style="color:#15803d"></i></div>
+        <div><div class="feat-title">Any Device, Anywhere</div><div class="feat-desc">Works on phones, tablets and desktops — with offline support</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="lnd-footer-bar"><strong>PhuSmart</strong> — Digital Record of Work &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp; Demo Secondary School &nbsp;·&nbsp; <span style="color:var(--green);font-weight:700">Interested? Contact us to set up your school.</span></div>
+</div>
+</div>
+
+<!-- ═══════════════════ MAIN APP ═══════════════════ -->
+<div id="mainApp">
+
+<!-- LOGIN: TEACHER -->
+<div id="loginTeacher" class="screen">
+<div class="auth-wrap">
+  <div style="width:100%;max-width:420px">
+    <button class="btn-back-top" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    <div class="auth-card" style="margin-top:12px">
+      <div class="ac-header ach-teacher">
+        <div class="ac-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h1>Teacher Login</h1><p>Demo Secondary School</p>
+        <div class="ac-school"><i class="fas fa-map-marker-alt"></i> DEMO-001</div>
+      </div>
+      <div class="ac-body">
+        <div class="demo-box"><b>📌 Demo Credentials</b>Username: <b>gokoth@demo001</b> &nbsp;|&nbsp; Password: <b>pass123</b></div>
+        <div class="fg"><label><i class="fas fa-user"></i> Username</label><input class="inp" id="tUser" value="gokoth@demo001"></div>
+        <div class="fg"><label><i class="fas fa-lock"></i> Password</label><input class="inp" type="password" id="tPass" value="pass123"></div>
+        <button class="btn-login blt" onclick="loginAs('teacher')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- LOGIN: HOS -->
+<div id="loginHos" class="screen">
+<div class="auth-wrap">
+  <div style="width:100%;max-width:420px">
+    <button class="btn-back-top" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    <div class="auth-card" style="margin-top:12px">
+      <div class="ac-header ach-hos">
+        <div class="ac-icon"><i class="fas fa-user-tie"></i></div>
+        <h1>HOS Login</h1><p>Head of Subject — Demo Secondary School</p>
+        <div class="ac-school"><i class="fas fa-map-marker-alt"></i> DEMO-001</div>
+      </div>
+      <div class="ac-body">
+        <div class="demo-box"><b>📌 Demo Credentials</b>Username: <b>fwanjiku@demo001</b> &nbsp;|&nbsp; Password: <b>pass123</b></div>
+        <div class="fg"><label><i class="fas fa-user"></i> Username</label><input class="inp" id="hosUser" value="fwanjiku@demo001"></div>
+        <div class="fg"><label><i class="fas fa-lock"></i> Password</label><input class="inp" type="password" id="hosPass" value="pass123"></div>
+        <button class="btn-login blh" onclick="loginAs('hos')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- LOGIN: HOD -->
+<div id="loginHod" class="screen">
+<div class="auth-wrap">
+  <div style="width:100%;max-width:420px">
+    <button class="btn-back-top" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    <div class="auth-card" style="margin-top:12px">
+      <div class="ac-header ach-hod">
+        <div class="ac-icon"><i class="fas fa-user-graduate"></i></div>
+        <h1>HOD Login</h1><p>Head of Department — Demo Secondary School</p>
+        <div class="ac-school"><i class="fas fa-map-marker-alt"></i> DEMO-001</div>
+      </div>
+      <div class="ac-body">
+        <div class="demo-box"><b>📌 Demo Credentials</b>Username: <b>jkamau@demo001</b> &nbsp;|&nbsp; Password: <b>pass123</b></div>
+        <div class="fg"><label><i class="fas fa-user"></i> Username</label><input class="inp" id="hodUser" value="jkamau@demo001"></div>
+        <div class="fg"><label><i class="fas fa-lock"></i> Password</label><input class="inp" type="password" id="hodPass" value="pass123"></div>
+        <button class="btn-login blhod" onclick="loginAs('hod')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- LOGIN: PRINCIPAL -->
+<div id="loginPrincipal" class="screen">
+<div class="auth-wrap">
+  <div style="width:100%;max-width:420px">
+    <button class="btn-back-top" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    <div class="auth-card" style="margin-top:12px">
+      <div class="ac-header ach-principal">
+        <div class="ac-icon"><i class="fas fa-school"></i></div>
+        <h1>Principal Login</h1><p>Demo Secondary School</p>
+        <div class="ac-school"><i class="fas fa-map-marker-alt"></i> DEMO-001</div>
+      </div>
+      <div class="ac-body">
+        <div class="demo-box"><b>📌 Demo Credentials</b>Username: <b>smaina@demo001</b> &nbsp;|&nbsp; Password: <b>pass123</b></div>
+        <div class="fg"><label><i class="fas fa-user"></i> Username</label><input class="inp" id="pUser" value="smaina@demo001"></div>
+        <div class="fg"><label><i class="fas fa-lock"></i> Password</label><input class="inp" type="password" id="pPass" value="pass123"></div>
+        <button class="btn-login blp" onclick="loginAs('principal')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- LOGIN: DEPUTY -->
+<div id="loginDeputy" class="screen">
+<div class="auth-wrap">
+  <div style="width:100%;max-width:420px">
+    <button class="btn-back-top" onclick="goLanding()"><i class="fas fa-arrow-left"></i> Back to Home</button>
+    <div class="auth-card" style="margin-top:12px">
+      <div class="ac-header ach-deputy">
+        <div class="ac-icon"><i class="fas fa-user-tie"></i></div>
+        <h1>Deputy Principal Login</h1><p>Demo Secondary School</p>
+        <div class="ac-school"><i class="fas fa-map-marker-alt"></i> DEMO-001</div>
+      </div>
+      <div class="ac-body">
+        <div class="demo-box"><b>📌 Demo Credentials</b>Username: <b>dmugo@demo001</b> &nbsp;|&nbsp; Password: <b>pass123</b></div>
+        <div class="fg"><label><i class="fas fa-user"></i> Username</label><input class="inp" id="depUser" value="dmugo@demo001"></div>
+        <div class="fg"><label><i class="fas fa-lock"></i> Password</label><input class="inp" type="password" id="depPass" value="pass123"></div>
+        <button class="btn-login bldep" onclick="loginAs('deputy')"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TEACHER DASHBOARD
+════════════════════════════════════════════ -->
+<div id="teacherDashboard" class="screen">
+<div class="dash-page">
+  <div class="dash-header">
+    <div class="dh-left">
+      <div class="dh-avatar dva-t"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div>
+        <div class="dh-name">Mr. George Okoth</div>
+        <div class="dh-sub">Mathematics &bull; Physics</div>
+        <div class="dh-meta">
+          <span class="rbadge rb-t">Teacher</span>
+          <span class="school-chip">DEMO-001</span>
+          <span class="term-chip" style="background:#f0fdf4;color:#15803d;border-color:#bbf7d0">Term 2 — Week 7</span>
+        </div>
+      </div>
+    </div>
+    <div class="dh-right">
+      <button class="btn-notif" onclick="toggleCard('tRemarksCard');toast('3 unread remarks','info')">
+        <i class="fas fa-bell"></i><span class="notif-dot">3</span>
+      </button>
+      <button class="btn-sm" onclick="toast('Profile — available in full app','info')"><i class="fas fa-user-circle"></i> Profile</button>
+      <button class="btn-logout" onclick="goLanding()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#667eea,#764ba2)"><i class="fas fa-file-alt"></i></div>
+      <div><div class="stat-val">18</div><div class="stat-lbl">My Records</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#22c55e,#15803d)"><i class="fas fa-check-circle"></i></div>
+      <div><div class="stat-val">14</div><div class="stat-lbl">Reviewed</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#d97706,#b45309)"><i class="fas fa-clock"></i></div>
+      <div><div class="stat-val">4</div><div class="stat-lbl">Pending</div></div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="abtn primary" onclick="openNewRecord()"><i class="fas fa-plus-circle"></i> New Record</button>
+    <button class="abtn" onclick="toggleCard('tMyRecordsCard')"><i class="fas fa-history"></i> My Records</button>
+    <button class="abtn" onclick="toggleCard('tRemarksCard')"><i class="fas fa-comments"></i> Remarks <span style="background:var(--red);color:white;border-radius:50%;padding:1px 6px;font-size:10px;margin-left:2px;font-weight:800">3</span></button>
+    <button class="abtn" onclick="toggleCard('tCoverageCard')"><i class="fas fa-chart-bar"></i> Syllabus Coverage</button>
+  </div>
+
+  <!-- NEW RECORD CARD -->
+  <div class="dcard" id="newRecordCard" style="display:none">
+    <div class="dcard-hdr dch-green">
+      <h3><i class="fas fa-plus-circle"></i> New Work Record</h3>
+      <button class="btn-xcard" onclick="closeCard('newRecordCard')">&times;</button>
+    </div>
+    <div class="form-body">
+      <!-- Subject picker -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Select Subject</div>
+        <div class="subj-pills" id="tSubjPills">
+          <span class="spill active" style="background:#667eea" onclick="selectSubj(this,'Mathematics')">Mathematics</span>
+          <span class="spill" style="background:#0ea5e9" onclick="selectSubj(this,'Physics')">Physics</span>
+        </div>
+      </div>
+      <!-- Curriculum -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Curriculum</div>
+        <div class="curr-toggle">
+          <button class="curr-btn a844" id="btn844" onclick="setCurr('844')">8-4-4</button>
+          <button class="curr-btn" id="btnCBC" onclick="setCurr('CBC')">CBC</button>
+        </div>
+      </div>
+
+      <!-- 8-4-4 form -->
+      <div id="form844">
+        <div class="form-row-2">
+          <div class="fg">
+            <label class="fg-label"><i class="fas fa-calendar-check"></i> Term *</label>
+            <select class="inp" id="rTerm">
+              <option value="">— Select Term —</option><option>Term 1</option><option selected>Term 2</option><option>Term 3</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fg-label"><i class="fas fa-calendar-week"></i> Week No *</label>
+            <select class="inp" id="rWeek">
+              <option value="">— Select Week —</option>
+              <option>Week 1</option><option>Week 2</option><option>Week 3</option><option>Week 4</option>
+              <option>Week 5</option><option>Week 6</option><option selected>Week 7</option><option>Week 8</option>
+              <option>Week 9</option><option>Week 10</option><option>Week 11</option><option>Week 12</option>
+              <option>Week 13</option><option>Week 14</option><option>Week 15</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-calendar"></i> Date of Submission *</label>
+          <input class="inp" type="date" id="rDate" value="2026-05-08">
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-users"></i> Class Taught *</label>
+          <select class="inp" id="rClass">
+            <option value="">— Select class —</option>
+            <option>Form 1A</option><option>Form 1B</option><option>Form 2A</option><option>Form 2B</option>
+            <option selected>Form 3A</option><option>Form 3B</option><option>Form 3C</option>
+            <option>Form 4A</option><option>Form 4B</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-tag"></i> Topic *</label>
+          <select class="inp" id="rTopic">
+            <option value="">— Select Topic —</option>
+            <option>Quadratic Equations</option><option selected>Trigonometry</option>
+            <option>Logarithms &amp; Indices</option><option>Probability</option>
+            <option>Statistics</option><option>Vectors</option><option>Linear Programming</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-table"></i> Lessons &amp; Subtopics</label>
+          <table class="lesson-tbl">
+            <thead><tr><th style="width:110px">Lesson No.</th><th>Subtopic</th></tr></thead>
+            <tbody id="lessonRows844">
+              <tr><td><input value="Lesson 13"></td><td><input class="sub" value="Sine rule and its applications"></td></tr>
+              <tr><td><input value="Lesson 14"></td><td><input class="sub" value="Cosine rule — deriving and applying"></td></tr>
+              <tr><td><input value="Lesson 15"></td><td><input class="sub" value="Area of triangle using trigonometry"></td></tr>
+              <tr><td><input placeholder="Lesson No."></td><td><input class="sub" placeholder="Subtopic…"></td></tr>
+            </tbody>
+          </table>
+          <button class="add-row-btn" onclick="addRow('lessonRows844','#667eea')"><i class="fas fa-plus"></i> Add Lesson</button>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-comment"></i> Remark</label>
+          <textarea class="inp" rows="3" id="rRemark">Students struggled with the cosine rule. Will revisit in next lesson before moving to area formula.</textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn-draft" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
+          <button class="btn-submit" onclick="submitRecord()"><i class="fas fa-paper-plane"></i> Submit</button>
+        </div>
+      </div>
+
+      <!-- CBC form -->
+      <div id="formCBC" style="display:none">
+        <div class="form-row-2">
+          <div class="fg">
+            <label class="fg-label"><i class="fas fa-calendar-check"></i> Term *</label>
+            <select class="inp"><option>Term 1</option><option selected>Term 2</option><option>Term 3</option></select>
+          </div>
+          <div class="fg">
+            <label class="fg-label"><i class="fas fa-calendar-week"></i> Week No *</label>
+            <select class="inp"><option value="">— Select Week —</option><option>Week 5</option><option>Week 6</option><option selected>Week 7</option><option>Week 8</option></select>
+          </div>
+        </div>
+        <div class="fg"><label class="fg-label"><i class="fas fa-calendar"></i> Date *</label><input class="inp" type="date" value="2026-05-08"></div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-users"></i> Grade / Class *</label>
+          <select class="inp"><option value="">— Select class —</option><option>Grade 7A</option><option selected>Grade 8A</option><option>Grade 9A</option></select>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-tag"></i> Strand *</label>
+          <select class="inp"><option value="">— Select Strand —</option><option selected>Living Things and Their Environment</option><option>Forces and Energy</option><option>Water</option></select>
+        </div>
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-table"></i> Lessons &amp; Sub Strands</label>
+          <table class="lesson-tbl">
+            <thead style="background:#e8f5e9"><tr><th style="width:110px">Lesson No.</th><th>Sub Strand</th></tr></thead>
+            <tbody id="lessonRowsCBC">
+              <tr><td><input value="Lesson 8" style="color:#4CAF50"></td><td><input class="sub" value="Food chains and food webs"></td></tr>
+              <tr><td><input value="Lesson 9" style="color:#4CAF50"></td><td><input class="sub" value="Energy flow in ecosystems"></td></tr>
+              <tr><td><input placeholder="Lesson No." style="color:#4CAF50"></td><td><input class="sub" placeholder="Sub strand…"></td></tr>
+            </tbody>
+          </table>
+          <button class="add-row-btn" style="border-color:#86efac;color:#15803d;background:#f0fdf4" onclick="addRow('lessonRowsCBC','#4CAF50')"><i class="fas fa-plus"></i> Add Lesson</button>
+        </div>
+        <div class="fg"><label class="fg-label"><i class="fas fa-comment"></i> Remark</label><textarea class="inp" rows="2">Students engaged well. A few struggled with multi-step food webs — will revise next lesson.</textarea></div>
+        <div class="form-actions">
+          <button class="btn-draft" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
+          <button class="btn-submit" style="background:linear-gradient(135deg,#4CAF50,#2E7D32)" onclick="submitRecord()"><i class="fas fa-paper-plane"></i> Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY RECORDS -->
+  <div class="dcard" id="tMyRecordsCard" style="display:none">
+    <div class="dcard-hdr dch-purple">
+      <h3><i class="fas fa-history"></i> My Records — Term 2</h3>
+      <button class="btn-xcard" onclick="closeCard('tMyRecordsCard')">&times;</button>
+    </div>
+    <div class="ovx">
+      <table class="rec-tbl">
+        <thead><tr><th>Wk</th><th>Date</th><th>Subject</th><th>Class</th><th>Topic</th><th>Curr.</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>7</b></td><td>08 May</td><td>Mathematics</td><td>Form 3A</td><td>Trigonometry</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-pending">Pending</span></td></tr>
+          <tr><td><b>7</b></td><td>08 May</td><td>Physics</td><td>Form 4B</td><td>Wave Motion</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-pending">Pending</span></td></tr>
+          <tr><td><b>6</b></td><td>02 May</td><td>Mathematics</td><td>Form 3A</td><td>Quadratic Equations</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-reviewed">Reviewed</span></td></tr>
+          <tr><td><b>6</b></td><td>02 May</td><td>Physics</td><td>Form 4B</td><td>Light &amp; Optics</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-done">Done</span></td></tr>
+          <tr><td><b>5</b></td><td>25 Apr</td><td>Mathematics</td><td>Form 3B</td><td>Logarithms</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-done">Done</span></td></tr>
+          <tr><td><b>4</b></td><td>18 Apr</td><td>Mathematics</td><td>Form 3A</td><td>Linear Programming</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-forwarded">Forwarded</span></td></tr>
+          <tr><td><b>3</b></td><td>11 Apr</td><td>Physics</td><td>Form 4A</td><td>Electromagnetism</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-done">Done</span></td></tr>
+          <tr><td><b>2</b></td><td>04 Apr</td><td>Mathematics</td><td>Form 3A</td><td>Vectors</td><td><span class="cbadge cb-844">8-4-4</span></td><td><span class="sbadge sb-done">Done</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REMARKS -->
+  <div class="dcard" id="tRemarksCard" style="display:none">
+    <div class="dcard-hdr dch-pink">
+      <h3><i class="fas fa-comments"></i> Recent Remarks</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="background:rgba(255,255,255,.25);padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800">3 unread</span>
+        <button class="btn-xcard" onclick="closeCard('tRemarksCard')">&times;</button>
+      </div>
+    </div>
+    <div class="remark-item">
+      <div class="remark-meta"><span class="remark-who">Ms. Faith Wanjiku — Mathematics HOS</span><span class="remark-date">02 May 2026 · Week 6</span></div>
+      <div class="remark-body pos">✓ Good coverage of quadratic equations. Ensure factorisation method is well practised before moving to completing the square. Approved.</div>
+    </div>
+    <div class="remark-item">
+      <div class="remark-meta"><span class="remark-who">Ms. Faith Wanjiku — Mathematics HOS</span><span class="remark-date">25 Apr 2026 · Week 5</span></div>
+      <div class="remark-body warn">⚠ Logarithms section is behind schedule. Please cover natural logs in Week 6 to catch up with the scheme of work.</div>
+    </div>
+    <div class="remark-item">
+      <div class="remark-meta"><span class="remark-who">Mr. Daniel Njoroge — Physics HOS</span><span class="remark-date">02 May 2026 · Week 6</span></div>
+      <div class="remark-body pos">✓ Optics well handled. Practical experiment notes need to be included in next submission. Good pace overall.</div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS COVERAGE -->
+  <div class="dcard" id="tCoverageCard" style="display:none">
+    <div class="dcard-hdr dch-dark">
+      <h3><i class="fas fa-chart-pie"></i> Syllabus Coverage — Term 2</h3>
+      <button class="btn-xcard" onclick="closeCard('tCoverageCard')">&times;</button>
+    </div>
+    <div style="padding:12px 20px 0;font-size:11px;color:#64748b"><i class="fas fa-info-circle" style="color:#667eea"></i> Coverage = topics taught ÷ total topics set by HOS</div>
+    <div class="cov-item"><div class="cov-label"><span>Mathematics — Form 3A</span><span style="color:var(--green-dark);font-weight:800">72%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:72%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Mathematics — Form 3B</span><span style="color:var(--green-dark);font-weight:800">68%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:68%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Physics — Form 4A</span><span style="color:var(--amber);font-weight:800">55%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:55%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Physics — Form 4B</span><span style="color:var(--amber);font-weight:800">48%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:48%"></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOS DASHBOARD
+════════════════════════════════════════════ -->
+<div id="hosDashboard" class="screen">
+<div class="dash-page">
+  <div class="dash-header">
+    <div class="dh-left">
+      <div class="dh-avatar dva-h"><i class="fas fa-user-tie"></i></div>
+      <div>
+        <div class="dh-name">Ms. Faith Wanjiku</div>
+        <div class="dh-sub">Head of Subject — Mathematics</div>
+        <div class="dh-meta">
+          <span class="rbadge rb-h">Head of Subject</span>
+          <span class="school-chip">DEMO-001</span>
+          <span class="term-chip" style="background:#fce7f3;color:var(--pink);border-color:#fbcfe8">Term 2</span>
+        </div>
+      </div>
+    </div>
+    <div class="dh-right">
+      <button class="btn-sm" onclick="doExport()"><i class="fas fa-download"></i> Export</button>
+      <button class="btn-sm" onclick="doPrint()"><i class="fas fa-print"></i> Print</button>
+      <button class="btn-logout" onclick="goLanding()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#db2777,#be185d)"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div><div class="stat-val">5</div><div class="stat-lbl">Total Teachers</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#22c55e,#15803d)"><i class="fas fa-check-circle"></i></div>
+      <div><div class="stat-val">26</div><div class="stat-lbl">Submitted</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#dc2626,#b91c1c)"><i class="fas fa-exclamation-circle"></i></div>
+      <div><div class="stat-val">5</div><div class="stat-lbl">Not Submitted</div></div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="abtn primary" onclick="toggleCard('hosOwnRecordCard')"><i class="fas fa-plus-circle"></i> Add New Record</button>
+    <button class="abtn primary-purple" onclick="toggleCard('hosMyRecordsCard')"><i class="fas fa-folder-open"></i> My Records</button>
+    <button class="abtn" style="background:linear-gradient(135deg,#FF9800,#E65100);color:white;border:none" onclick="openManageTopics()"><i class="fas fa-list-ol"></i> Manage Topics</button>
+  </div>
+
+  <!-- HOS own record form -->
+  <div class="dcard" id="hosOwnRecordCard" style="display:none">
+    <div class="dcard-hdr dch-pink">
+      <h3><i class="fas fa-plus-circle"></i> New Record — Mathematics</h3>
+      <button class="btn-xcard" onclick="closeCard('hosOwnRecordCard')">&times;</button>
+    </div>
+    <div class="form-body">
+      <div class="form-row-2">
+        <div class="fg"><label class="fg-label"><i class="fas fa-calendar-check"></i> Term *</label><select class="inp"><option>Term 1</option><option selected>Term 2</option><option>Term 3</option></select></div>
+        <div class="fg"><label class="fg-label"><i class="fas fa-calendar-week"></i> Week No *</label><select class="inp"><option selected>Week 7</option></select></div>
+      </div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-calendar"></i> Date *</label><input class="inp" type="date" value="2026-05-08"></div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-users"></i> Class Taught *</label><select class="inp"><option>Form 3A</option><option>Form 3B</option><option>Form 4A</option><option>Form 4B</option></select></div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-tag"></i> Topic *</label><select class="inp"><option>Trigonometry</option><option>Probability</option><option>Vectors</option></select></div>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-table"></i> Lessons &amp; Subtopics</label>
+        <table class="lesson-tbl"><thead><tr><th style="width:110px">Lesson No.</th><th>Subtopic</th></tr></thead>
+        <tbody id="hosLessonRows"><tr><td><input value="Lesson 1"></td><td><input class="sub" placeholder="Subtopic…"></td></tr></tbody></table>
+        <button class="add-row-btn" onclick="addRow('hosLessonRows','#667eea')"><i class="fas fa-plus"></i> Add Lesson</button>
+      </div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-comment"></i> Remark</label><textarea class="inp" rows="2" placeholder="Any notes…"></textarea></div>
+      <div class="form-actions">
+        <button class="btn-draft" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
+        <button class="btn-submit" style="background:linear-gradient(135deg,#db2777,#be185d)" onclick="submitRecord()"><i class="fas fa-paper-plane"></i> Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOS my records -->
+  <div class="dcard" id="hosMyRecordsCard" style="display:none">
+    <div class="dcard-hdr dch-purple">
+      <h3><i class="fas fa-folder-open"></i> My Records — Mathematics</h3>
+      <button class="btn-xcard" onclick="closeCard('hosMyRecordsCard')">&times;</button>
+    </div>
+    <div class="ovx">
+      <table class="rec-tbl">
+        <thead><tr><th>Wk</th><th>Date</th><th>Class</th><th>Topic</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>7</b></td><td>08 May</td><td>Form 3A</td><td>Trigonometry</td><td><span class="sbadge sb-pending">Pending</span></td></tr>
+          <tr><td><b>6</b></td><td>02 May</td><td>Form 4A</td><td>Probability</td><td><span class="sbadge sb-done">Done</span></td></tr>
+          <tr><td><b>5</b></td><td>25 Apr</td><td>Form 3B</td><td>Logarithms</td><td><span class="sbadge sb-reviewed">Reviewed</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Week tabs -->
+  <div class="week-tabs-bar" id="hosTabs">
+    <button class="wtab" onclick="setHosWeek(this,4)">Week 4</button>
+    <button class="wtab" onclick="setHosWeek(this,5)">Week 5</button>
+    <button class="wtab" onclick="setHosWeek(this,6)">Week 6</button>
+    <button class="wtab active" onclick="setHosWeek(this,7)">Week 7</button>
+    <button class="wtab" onclick="setHosWeek(this,8)">Week 8</button>
+  </div>
+  <div class="week-tab-body">
+    <div class="ovx">
+      <table class="cons-tbl">
+        <thead><tr><th>Class</th><th>Teacher</th><th>Curr.</th><th>Topic</th><th>Date</th><th style="text-align:center">Lesson</th><th>Subtopic</th><th style="text-align:center">Status</th></tr></thead>
+        <tbody>
+          <tr class="form-hdr"><td colspan="8"><i class="fas fa-layer-group" style="margin-right:6px;opacity:.6"></i>Form 3</td></tr>
+          <tr>
+            <td class="cls-cell" rowspan="3">Form 3A</td><td class="tchr-cell" rowspan="3">G. Okoth</td>
+            <td rowspan="3"><span class="cbadge cb-844">8-4-4</span></td><td rowspan="3">Trigonometry</td>
+            <td rowspan="3" style="white-space:nowrap">08/05/2026</td>
+            <td style="text-align:center"><span class="ls-badge">13</span></td><td>Sine rule and its applications</td>
+            <td rowspan="3" style="text-align:center"><span class="sbadge sb-pending">pending</span></td>
+          </tr>
+          <tr class="dash-row"><td style="text-align:center"><span class="ls-badge">14</span></td><td>Cosine rule — deriving and applying</td></tr>
+          <tr class="dash-row"><td style="text-align:center"><span class="ls-badge">15</span></td><td>Area of triangle using trigonometry</td></tr>
+          <tr class="alt-row">
+            <td class="cls-cell">Form 3B</td><td class="tchr-cell">G. Okoth</td>
+            <td><span class="cbadge cb-844">8-4-4</span></td><td>Logarithms</td>
+            <td style="white-space:nowrap">07/05/2026</td>
+            <td style="text-align:center"><span class="ls-badge">9</span></td><td>Natural logarithms (ln)</td>
+            <td style="text-align:center"><span class="sbadge sb-done">done</span></td>
+          </tr>
+          <tr>
+            <td class="cls-cell">Form 3C</td><td class="tchr-cell">A. Mwenda</td>
+            <td><span class="cbadge cb-844">8-4-4</span></td><td>Linear Programming</td>
+            <td style="white-space:nowrap">07/05/2026</td>
+            <td style="text-align:center"><span class="ls-badge">5</span></td><td>Objective function and constraints</td>
+            <td style="text-align:center"><span class="sbadge sb-reviewed">reviewed</span></td>
+          </tr>
+          <tr class="form-hdr"><td colspan="8"><i class="fas fa-layer-group" style="margin-right:6px;opacity:.6"></i>Form 4</td></tr>
+          <tr class="alt-row">
+            <td class="cls-cell" rowspan="2">Form 4A</td><td class="tchr-cell" rowspan="2">A. Kamau</td>
+            <td rowspan="2"><span class="cbadge cb-844">8-4-4</span></td><td rowspan="2">Probability</td>
+            <td rowspan="2" style="white-space:nowrap">08/05/2026</td>
+            <td style="text-align:center"><span class="ls-badge">6</span></td><td>Mutually exclusive events</td>
+            <td rowspan="2" style="text-align:center"><span class="sbadge sb-reviewed">reviewed</span></td>
+          </tr>
+          <tr class="dash-row alt-row"><td style="text-align:center"><span class="ls-badge">7</span></td><td>Independent events — tree diagrams</td></tr>
+          <tr>
+            <td class="cls-cell">Form 4B</td><td class="tchr-cell">A. Kamau</td>
+            <td><span class="cbadge cb-844">8-4-4</span></td><td>Statistics II</td>
+            <td style="white-space:nowrap">09/05/2026</td>
+            <td style="text-align:center"><span class="ls-badge">4</span></td><td>Standard deviation from grouped data</td>
+            <td style="text-align:center"><span class="sbadge sb-forwarded">forwarded</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Remarks panel -->
+  <div class="dcard">
+    <div class="dcard-hdr dch-pink">
+      <h3><i class="fas fa-comment-dots"></i> Add / Edit Remarks</h3>
+      <button class="btn-hdr-sm" onclick="markAllReviewed()"><i class="fas fa-check-double"></i> Mark All Reviewed</button>
+    </div>
+    <div class="ovx">
+      <table class="rec-tbl">
+        <thead><tr><th>Teacher</th><th>Class</th><th>Topic</th><th>Lessons</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>G. Okoth</td><td>Form 3A</td><td>Trigonometry</td><td>13, 14, 15</td><td><span class="sbadge sb-pending">Pending</span></td><td><button class="abtn" style="font-size:11px;padding:5px 11px" onclick="openRemark('G. Okoth','Form 3A','Trigonometry')"><i class="fas fa-pen"></i> Add Remark</button></td></tr>
+          <tr><td>G. Okoth</td><td>Form 3B</td><td>Logarithms</td><td>9</td><td><span class="sbadge sb-done">Done</span></td><td><button class="abtn" style="font-size:11px;padding:5px 11px" onclick="openRemark('G. Okoth','Form 3B','Logarithms')"><i class="fas fa-pen"></i> Edit</button></td></tr>
+          <tr><td>A. Mwenda</td><td>Form 3C</td><td>Linear Programming</td><td>5</td><td><span class="sbadge sb-reviewed">Reviewed</span></td><td><button class="abtn" style="font-size:11px;padding:5px 11px" onclick="openRemark('A. Mwenda','Form 3C','Linear Prog.')"><i class="fas fa-pen"></i> Edit</button></td></tr>
+          <tr><td>A. Kamau</td><td>Form 4A</td><td>Probability</td><td>6, 7</td><td><span class="sbadge sb-reviewed">Reviewed</span></td><td><button class="abtn" style="font-size:11px;padding:5px 11px" onclick="openRemark('A. Kamau','Form 4A','Probability')"><i class="fas fa-pen"></i> Edit</button></td></tr>
+          <tr><td>A. Kamau</td><td>Form 4B</td><td>Statistics II</td><td>4</td><td><span class="sbadge sb-forwarded">Forwarded</span></td><td><button class="abtn" style="font-size:11px;padding:5px 11px" onclick="openRemark('A. Kamau','Form 4B','Statistics II')"><i class="fas fa-pen"></i> Edit</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HOS Syllabus Coverage -->
+  <div class="dcard">
+    <div class="dcard-hdr dch-dark">
+      <h3><i class="fas fa-chart-pie"></i> Syllabus Coverage — Mathematics — Term 2</h3>
+    </div>
+    <div style="padding:12px 20px 0;font-size:11px;color:#64748b"><i class="fas fa-info-circle" style="color:var(--amber)"></i> Coverage = topics taught ÷ total topics set via Manage Topics</div>
+    <div class="cov-item"><div class="cov-label"><span>Form 3A — G. Okoth</span><span style="color:var(--green-dark);font-weight:800">72%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:72%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Form 3B — G. Okoth</span><span style="color:var(--green-dark);font-weight:800">68%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:68%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Form 3C — A. Mwenda</span><span style="color:var(--amber);font-weight:800">58%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:58%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Form 4A — A. Kamau</span><span style="color:var(--green-dark);font-weight:800">75%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:75%"></div></div></div>
+    <div class="cov-item"><div class="cov-label"><span>Form 4B — A. Kamau</span><span style="color:var(--amber);font-weight:800">62%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:62%"></div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOD DASHBOARD
+════════════════════════════════════════════ -->
+<div id="hodDashboard" class="screen">
+<div class="dash-page">
+  <div class="dash-header">
+    <div class="dh-left">
+      <div class="dh-avatar dva-hod"><i class="fas fa-user-graduate"></i></div>
+      <div>
+        <div class="dh-name">Mr. James Kamau</div>
+        <div class="dh-sub">Head of Department — Sciences &amp; Mathematics</div>
+        <div class="dh-meta">
+          <span class="rbadge rb-hod">Head of Department</span>
+          <span class="school-chip">DEMO-001</span>
+          <span class="term-chip" style="background:var(--amber-light);color:var(--amber);border-color:#fde68a">Sciences &amp; Maths</span>
+        </div>
+      </div>
+    </div>
+    <div class="dh-right">
+      <button class="btn-sm" onclick="doExport()"><i class="fas fa-download"></i> Export</button>
+      <button class="btn-sm" onclick="doPrint()"><i class="fas fa-print"></i> Print</button>
+      <button class="btn-logout" onclick="goLanding()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#d97706,#b45309)"><i class="fas fa-inbox"></i></div>
+      <div><div class="stat-val">8</div><div class="stat-lbl">Pending</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#22c55e,#15803d)"><i class="fas fa-check-circle"></i></div>
+      <div><div class="stat-val">47</div><div class="stat-lbl">Reviewed</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico" style="background:linear-gradient(135deg,#667eea,#764ba2)"><i class="fas fa-comments"></i></div>
+      <div><div class="stat-val">23</div><div class="stat-lbl">With Remarks</div></div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="abtn primary" onclick="toggleCard('hodOwnRecordCard')"><i class="fas fa-plus-circle"></i> Add New Record</button>
+    <button class="abtn primary-purple" onclick="toggleCard('hodMyRecordsCard')"><i class="fas fa-folder-open"></i> My Records</button>
+  </div>
+
+  <!-- HOD own record form -->
+  <div class="dcard" id="hodOwnRecordCard" style="display:none">
+    <div class="dcard-hdr dch-amber">
+      <h3><i class="fas fa-plus-circle"></i> My Record Submission</h3>
+      <button class="btn-xcard" onclick="closeCard('hodOwnRecordCard')">&times;</button>
+    </div>
+    <div class="form-body">
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Select Subject</div>
+        <div class="subj-pills">
+          <span class="spill active" style="background:#d97706" onclick="selectSubj2(this)">Mathematics</span>
+          <span class="spill" style="background:#059669" onclick="selectSubj2(this)">Chemistry</span>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="fg"><label class="fg-label"><i class="fas fa-calendar-check"></i> Term *</label><select class="inp"><option>Term 1</option><option selected>Term 2</option><option>Term 3</option></select></div>
+        <div class="fg"><label class="fg-label"><i class="fas fa-calendar-week"></i> Week No *</label><select class="inp"><option selected>Week 7</option></select></div>
+      </div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-users"></i> Class *</label><select class="inp"><option>Form 3A</option><option>Form 4A</option></select></div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-tag"></i> Topic *</label><select class="inp"><option>Trigonometry</option><option>Probability</option></select></div>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-table"></i> Lessons &amp; Subtopics</label>
+        <table class="lesson-tbl"><thead><tr><th style="width:110px">Lesson No.</th><th>Subtopic</th></tr></thead>
+        <tbody id="hodLessonRows"><tr><td><input value="Lesson 1"></td><td><input class="sub" placeholder="Subtopic…"></td></tr></tbody></table>
+        <button class="add-row-btn" onclick="addRow('hodLessonRows','#d97706')"><i class="fas fa-plus"></i> Add Lesson</button>
+      </div>
+      <div class="form-actions">
+        <button class="btn-draft" onclick="saveDraft()"><i class="fas fa-save"></i> Save Draft</button>
+        <button class="btn-submit" style="background:linear-gradient(135deg,#d97706,#b45309)" onclick="submitRecord()"><i class="fas fa-paper-plane"></i> Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOD my records -->
+  <div class="dcard" id="hodMyRecordsCard" style="display:none">
+    <div class="dcard-hdr dch-purple">
+      <h3><i class="fas fa-folder-open"></i> My Records</h3>
+      <button class="btn-xcard" onclick="closeCard('hodMyRecordsCard')">&times;</button>
+    </div>
+    <div class="ovx"><table class="rec-tbl">
+      <thead><tr><th>Wk</th><th>Date</th><th>Subject</th><th>Class</th><th>Topic</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><b>7</b></td><td>08 May</td><td>Mathematics</td><td>Form 4A</td><td>Probability</td><td><span class="sbadge sb-pending">Pending</span></td></tr>
+        <tr><td><b>6</b></td><td>02 May</td><td>Chemistry</td><td>Form 3A</td><td>Acids and Bases</td><td><span class="sbadge sb-done">Done</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- Department Subjects -->
+  <div class="dcard">
+    <div class="dcard-hdr dch-amber">
+      <h3><i class="fas fa-book-open"></i> Department Subjects</h3>
+      <button class="btn-hdr-sm" onclick="toast('Data refreshed','success')"><i class="fas fa-sync-alt"></i> Refresh</button>
+    </div>
+    <div style="padding:16px 20px">
+      <p style="font-size:12px;color:var(--slate);margin-bottom:14px">Select a subject to view consolidated records and syllabus coverage.</p>
+      <div class="subj-btn-grid" id="hodSubjBtns">
+        <button class="subj-btn active" onclick="hodSelectSubj(this,'Mathematics')">Mathematics</button>
+        <button class="subj-btn" onclick="hodSelectSubj(this,'Physics')">Physics</button>
+        <button class="subj-btn" onclick="hodSelectSubj(this,'Chemistry')">Chemistry</button>
+        <button class="subj-btn" onclick="hodSelectSubj(this,'Biology')">Biology</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOD detail panel -->
+  <div id="hodSubjDetail">
+    <div class="week-tabs-bar" id="hodWeekTabs">
+      <button class="wtab" onclick="setHodWeek(this,'all')">All Weeks</button>
+      <button class="wtab" onclick="setHodWeek(this,5)">Week 5</button>
+      <button class="wtab" onclick="setHodWeek(this,6)">Week 6</button>
+      <button class="wtab active" onclick="setHodWeek(this,7)">Week 7</button>
+    </div>
+    <div class="week-tab-body">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span id="hodSubjTitle" style="font-size:14px;font-weight:800;color:var(--navy)">Mathematics — Week 7</span>
+        <button class="abtn" style="font-size:11px;padding:5px 13px" onclick="doPrint()"><i class="fas fa-print"></i> Print</button>
+      </div>
+      <!-- Coverage -->
+      <div style="padding:14px 0 0">
+        <div style="padding:0 20px 10px;font-size:13px;font-weight:700;color:var(--navy)"><i class="fas fa-chart-pie" style="color:#2563eb;margin-right:6px"></i>Syllabus Coverage</div>
+        <div class="cov-item"><div class="cov-label"><span>Form 3A — G. Okoth</span><span style="color:var(--green-dark);font-weight:800">72%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:72%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Form 4A — A. Kamau</span><span style="color:var(--green-dark);font-weight:800">75%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:75%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Form 4B — A. Kamau</span><span style="color:var(--amber);font-weight:800">62%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:62%"></div></div></div>
+      </div>
+      <!-- Consolidated table -->
+      <div style="padding:14px 18px 6px;font-size:13px;font-weight:700;color:var(--navy)"><i class="fas fa-table" style="margin-right:6px"></i>Consolidated Table</div>
+      <div class="ovx" style="padding:0 0 8px">
+        <table class="cons-tbl">
+          <thead><tr><th>Class</th><th>Teacher</th><th>Topic</th><th>Date</th><th style="text-align:center">Lesson</th><th>Subtopic</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="form-hdr"><td colspan="7">Form 3</td></tr>
+            <tr><td class="cls-cell" rowspan="3">Form 3A</td><td class="tchr-cell" rowspan="3">G. Okoth</td><td rowspan="3">Trigonometry</td><td rowspan="3">08/05/26</td><td style="text-align:center"><span class="ls-badge">13</span></td><td>Sine rule applications</td><td rowspan="3"><span class="sbadge sb-pending">pending</span></td></tr>
+            <tr class="dash-row"><td style="text-align:center"><span class="ls-badge">14</span></td><td>Cosine rule</td></tr>
+            <tr class="dash-row"><td style="text-align:center"><span class="ls-badge">15</span></td><td>Area using trigonometry</td></tr>
+            <tr class="form-hdr alt-row"><td colspan="7">Form 4</td></tr>
+            <tr class="alt-row"><td class="cls-cell">Form 4A</td><td class="tchr-cell">A. Kamau</td><td>Probability</td><td>08/05/26</td><td style="text-align:center"><span class="ls-badge">6</span></td><td>Mutually exclusive events</td><td><span class="sbadge sb-reviewed">reviewed</span></td></tr>
+            <tr class="alt-row"><td class="cls-cell">Form 4B</td><td class="tchr-cell">A. Kamau</td><td>Statistics II</td><td>09/05/26</td><td style="text-align:center"><span class="ls-badge">4</span></td><td>Standard deviation</td><td><span class="sbadge sb-forwarded">forwarded</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PRINCIPAL / DEPUTY DASHBOARD
+════════════════════════════════════════════ -->
+<div id="principalDashboard" class="screen" style="padding:0;background:#f0f2f8;min-height:100vh">
+
+  <!-- Header -->
+  <div class="p-header">
+    <div class="p-header-left">
+      <div class="p-header-avatar" id="pHeaderAvatar"><i class="fas fa-school"></i></div>
+      <div>
+        <div class="p-header-name" id="pWelcomeName">Dr. Samuel Maina</div>
+        <div style="font-size:12px;opacity:.8;margin-top:2px"><i class="fas fa-school" style="margin-right:5px;opacity:.7"></i>Demo Secondary School &nbsp;·&nbsp; <span id="pRoleLabel">Principal</span></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">DEMO-001</div>
+      <button class="btn-sm" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:white" onclick="toast('Profile — available in full app','info')"><i class="fas fa-user-circle"></i> Profile</button>
+      <button class="btn-sm" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:white" onclick="goLanding()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="p-filter-bar">
+    <span style="font-size:13px;font-weight:600;color:var(--slate)"><i class="fas fa-filter" style="margin-right:4px"></i>Filter:</span>
+    <select class="fsel" onchange="toast('Filter applied','info')"><option>All Terms</option><option selected>Term 2</option><option>Term 1</option></select>
+    <select class="fsel" onchange="toast('Filter applied','info')"><option>All Weeks</option><option selected>Week 7</option><option>Week 6</option><option>Week 5</option></select>
+    <select class="fsel" onchange="toast('Filter applied','info')"><option selected>All Subjects</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option></select>
+    <button class="btn-sm" onclick="toast('Filters cleared','info')"><i class="fas fa-times"></i> Clear</button>
+  </div>
+
+  <div class="p-body">
+
+    <!-- KPI + Compliance ring -->
+    <div style="display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;margin-bottom:20px">
+      <div class="p-kpi-grid">
+        <div class="p-kpi-card p-kpi-green">
+          <div class="p-kpi-icon p-icon-green"><i class="fas fa-file-alt"></i></div>
+          <div class="p-kpi-value">186</div>
+          <div class="p-kpi-label">Records Submitted</div>
+          <div class="p-kpi-sub">This term</div>
+        </div>
+        <div class="p-kpi-card p-kpi-orange">
+          <div class="p-kpi-icon p-icon-orange"><i class="fas fa-clock"></i></div>
+          <div class="p-kpi-value">12</div>
+          <div class="p-kpi-label">Pending Review</div>
+          <div class="p-kpi-sub">Awaiting HOS</div>
+        </div>
+        <div class="p-kpi-card p-kpi-blue">
+          <div class="p-kpi-icon p-icon-blue"><i class="fas fa-paper-plane"></i></div>
+          <div class="p-kpi-value">34</div>
+          <div class="p-kpi-label">Forwarded to HOD</div>
+          <div class="p-kpi-sub">This week</div>
+        </div>
+        <div class="p-kpi-card p-kpi-purple">
+          <div class="p-kpi-icon p-icon-purple"><i class="fas fa-check-double"></i></div>
+          <div class="p-kpi-value">140</div>
+          <div class="p-kpi-label">Approved by HOD</div>
+          <div class="p-kpi-sub">This term</div>
+        </div>
+        <div class="p-kpi-card p-kpi-red">
+          <div class="p-kpi-icon p-icon-red"><i class="fas fa-users"></i></div>
+          <div class="p-kpi-value">24</div>
+          <div class="p-kpi-label">Teachers</div>
+          <div class="p-kpi-sub">Active</div>
+        </div>
+      </div>
+      <!-- Compliance ring -->
+      <div class="compliance-ring-card">
+        <div style="position:relative;width:110px;height:110px">
+          <svg width="110" height="110" viewBox="0 0 110 110" style="transform:rotate(-90deg)">
+            <circle cx="55" cy="55" r="45" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+            <circle cx="55" cy="55" r="45" fill="none" stroke="#22c55e" stroke-width="10"
+              stroke-dasharray="283" stroke-dashoffset="71" stroke-linecap="round"/>
+          </svg>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
+            <div style="font-size:1.4rem;font-weight:800">75%</div>
+            <div style="font-size:10px;color:var(--slate);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Done</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;text-align:center">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">School Compliance</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--slate)"><div style="width:9px;height:9px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>Submitted: 186</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--slate)"><div style="width:9px;height:9px;border-radius:50%;background:#fbbf24;flex-shrink:0"></div>Pending: 12</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--slate)"><div style="width:9px;height:9px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Missing: 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav label -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate);display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <i class="fas fa-th-large" style="color:var(--purple)"></i> Go to Section
+      <span style="flex:1;height:1px;background:var(--border);display:block"></span>
+    </div>
+
+    <!-- 3D Nav buttons -->
+    <div class="p-nav-grid">
+      <button class="p-nav-btn" style="border-bottom-color:#2d5fa8" onclick="showPSection('pStaff')">
+        <div class="p-nav-icon" style="background:#dbeafe"><i class="fas fa-users" style="color:#2563eb"></i></div>
+        <div><div class="p-nav-title">Staff</div><div class="p-nav-sub">Manage staff</div></div>
+      </button>
+      <button class="p-nav-btn" style="border-bottom-color:#b5600f" onclick="showPSection('pRecords')">
+        <div class="p-nav-icon" style="background:#ffedd5"><i class="fas fa-folder-open" style="color:#ea580c"></i></div>
+        <div><div class="p-nav-title">Records</div><div class="p-nav-sub">View submissions</div></div>
+      </button>
+      <button class="p-nav-btn" style="border-bottom-color:#0d6648" onclick="showPSection('pDepts')">
+        <div class="p-nav-icon" style="background:#d1fae5"><i class="fas fa-layer-group" style="color:#059669"></i></div>
+        <div><div class="p-nav-title">Departments</div><div class="p-nav-sub">Dept health</div></div>
+      </button>
+      <button class="p-nav-btn" style="border-bottom-color:#a82020" onclick="showPSection('pSyllabus')">
+        <div class="p-nav-icon" style="background:#fee2e2"><i class="fas fa-chart-pie" style="color:#dc2626"></i></div>
+        <div><div class="p-nav-title">Syllabus</div><div class="p-nav-sub">Coverage report</div></div>
+      </button>
+      <button class="p-nav-btn" style="border-bottom-color:#1a7a3a" onclick="showPSection('pBackup')">
+        <div class="p-nav-icon" style="background:#dcfce7"><i class="fas fa-database" style="color:#16a34a"></i></div>
+        <div><div class="p-nav-title">Backup</div><div class="p-nav-sub">Download data</div></div>
+      </button>
+    </div>
+
+    <!-- Back bar -->
+    <div id="pBackBar" style="display:none;margin-bottom:16px">
+      <button class="p-back-btn" onclick="closePSection()"><i class="fas fa-arrow-left"></i> Back to Overview</button>
+    </div>
+
+    <!-- ══ STAFF ══ -->
+    <div id="pStaff" class="p-section">
+      <div class="p-section-hdr">
+        <div class="p-section-title"><i class="fas fa-users" style="color:var(--purple)"></i> Staff Overview</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="abtn primary" onclick="openAddStaffModal()"><i class="fas fa-user-plus"></i> Add New Staff</button>
+          <button class="abtn" style="background:#dcfce7;border-color:#bbf7d0;color:#15803d" onclick="toast('Manage Classes — in full app','info')"><i class="fas fa-chalkboard"></i> Manage Classes</button>
+          <button class="abtn" style="background:#ffedd5;border-color:#fed7aa;color:#c2410c" onclick="doPrint()"><i class="fas fa-print"></i> Print Login Sheet</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span style="padding:4px 14px;border-radius:20px;background:#e0e7ff;color:#4338ca;font-size:12px;font-weight:700">Principal: 1</span>
+        <span style="padding:4px 14px;border-radius:20px;background:#ede9fe;color:#7c3aed;font-size:12px;font-weight:700">Deputy: 1</span>
+        <span style="padding:4px 14px;border-radius:20px;background:var(--amber-light);color:var(--amber);font-size:12px;font-weight:700">HODs: 3</span>
+        <span style="padding:4px 14px;border-radius:20px;background:var(--pink-light);color:var(--pink);font-size:12px;font-weight:700">HOS: 7</span>
+        <span style="padding:4px 14px;border-radius:20px;background:var(--green-light);color:var(--green-dark);font-size:12px;font-weight:700">Teachers: 13</span>
+      </div>
+      <div style="background:white;border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="abtn" style="font-size:11px;padding:5px 12px;background:var(--purple);color:white;border:none">All</button>
+            <button class="abtn" style="font-size:11px;padding:5px 12px" onclick="toast('Showing Teachers','info')">Teachers</button>
+            <button class="abtn" style="font-size:11px;padding:5px 12px" onclick="toast('Showing HOS','info')">HOS</button>
+            <button class="abtn" style="font-size:11px;padding:5px 12px" onclick="toast('Showing HOD','info')">HOD</button>
+          </div>
+          <input type="text" placeholder="Search staff…" oninput="toast('Searching: '+this.value,'info')" style="padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:200px">
+        </div>
+        <div class="ovx">
+          <table class="staff-tbl">
+            <thead><tr><th>#</th><th>Full Name</th><th>Role</th><th>Subject / Dept</th><th>This Week</th><th>Total Records</th><th>Username</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><b>Dr. Samuel Maina</b></td><td><span class="rbadge rb-p">Principal</span></td><td>Administration</td><td>—</td><td>—</td><td class="mono">smaina@demo001</td></tr>
+              <tr><td>2</td><td><b>Ms. Diana Mugo</b></td><td><span class="rbadge rb-dep">Deputy Principal</span></td><td>Administration</td><td>—</td><td>—</td><td class="mono">dmugo@demo001</td></tr>
+              <tr><td>3</td><td><b>Mr. James Kamau</b></td><td><span class="rbadge rb-hod">HOD</span></td><td>Sciences &amp; Maths</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>5</td><td class="mono">jkamau@demo001</td></tr>
+              <tr><td>4</td><td><b>Ms. Mary Njeri</b></td><td><span class="rbadge rb-hod">HOD</span></td><td>Languages</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>4</td><td class="mono">mnjeri@demo001</td></tr>
+              <tr><td>5</td><td><b>Ms. Faith Wanjiku</b></td><td><span class="rbadge rb-h">HOS</span></td><td>Mathematics</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>12</td><td class="mono">fwanjiku@demo001</td></tr>
+              <tr><td>6</td><td><b>Mr. Daniel Njoroge</b></td><td><span class="rbadge rb-h">HOS</span></td><td>Physics</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>10</td><td class="mono">dnjoroge@demo001</td></tr>
+              <tr><td>7</td><td><b>Ms. Rose Oduya</b></td><td><span class="rbadge rb-h">HOS</span></td><td>Chemistry</td><td style="color:var(--red);font-weight:700">✗ Missing</td><td>8</td><td class="mono">roduya@demo001</td></tr>
+              <tr><td>8</td><td><b>Mr. George Okoth</b></td><td><span class="rbadge rb-t">Teacher</span></td><td>Maths, Physics</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>18</td><td class="mono">gokoth@demo001</td></tr>
+              <tr><td>9</td><td><b>Ms. Alice Mwenda</b></td><td><span class="rbadge rb-t">Teacher</span></td><td>Mathematics</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>16</td><td class="mono">amwenda@demo001</td></tr>
+              <tr><td>10</td><td><b>Mr. Anthony Kamau</b></td><td><span class="rbadge rb-t">Teacher</span></td><td>Mathematics</td><td style="color:var(--red);font-weight:700">✗ Missing</td><td>14</td><td class="mono">akamau@demo001</td></tr>
+              <tr><td>11</td><td><b>Mr. Allan Ochieng</b></td><td><span class="rbadge rb-t">Teacher</span></td><td>English</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>16</td><td class="mono">aochieng@demo001</td></tr>
+              <tr><td>12</td><td><b>Ms. Beatrice Adhiambo</b></td><td><span class="rbadge rb-t">Teacher</span></td><td>Kiswahili</td><td style="color:var(--green-dark);font-weight:700">✓ Submitted</td><td>15</td><td class="mono">badhiambo@demo001</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:10px 18px;border-top:1px solid var(--border);font-size:12px;color:var(--slate)">Showing 12 of 25 staff members</div>
+      </div>
+    </div>
+
+    <!-- ══ RECORDS ══ -->
+    <div id="pRecords" class="p-section">
+      <div class="p-section-title" style="margin-bottom:16px"><i class="fas fa-folder-open" style="color:var(--orange)"></i> All Records — Term 2, Week 7</div>
+      <div style="background:white;border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span style="font-size:13px;font-weight:600;color:var(--slate)"><i class="fas fa-filter" style="margin-right:4px"></i>Filter:</span>
+          <select class="fsel" onchange="toast('Filtered','info')"><option selected>All Departments</option><option>Sciences &amp; Maths</option><option>Languages</option><option>Humanities</option></select>
+          <select class="fsel" onchange="toast('Filtered','info')"><option selected>All Subjects</option><option>Mathematics</option><option>Physics</option></select>
+        </div>
+        <div class="ovx">
+          <table class="staff-tbl">
+            <thead><tr><th>Dept</th><th>Subject</th><th>HOS</th><th>HOD</th><th>Submitted</th><th>Coverage</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="4" style="font-weight:800;border-right:3px solid var(--purple);vertical-align:middle">Sciences &amp; Maths</td><td>Mathematics</td><td>F. Wanjiku</td><td>J. Kamau</td><td style="color:var(--green-dark);font-weight:800">5/5</td><td><div class="mini-bar"><div class="mini-fill cov-high" style="width:70%"></div></div> 70%</td><td><span class="sbadge sb-complete">Complete</span></td></tr>
+              <tr><td>Physics</td><td>D. Njoroge</td><td>J. Kamau</td><td style="color:var(--green-dark);font-weight:800">2/2</td><td><div class="mini-bar"><div class="mini-fill cov-high" style="width:64%"></div></div> 64%</td><td><span class="sbadge sb-inreview">In Review</span></td></tr>
+              <tr><td>Chemistry</td><td>R. Oduya</td><td>J. Kamau</td><td style="color:var(--red);font-weight:800">1/2</td><td><div class="mini-bar"><div class="mini-fill cov-mid" style="width:52%"></div></div> 52%</td><td><span class="sbadge sb-incomplete">Incomplete</span></td></tr>
+              <tr><td>Biology</td><td>E. Mutiso</td><td>J. Kamau</td><td style="color:var(--red);font-weight:800">1/2</td><td><div class="mini-bar"><div class="mini-fill cov-mid" style="width:45%"></div></div> 45%</td><td><span class="sbadge sb-incomplete">Incomplete</span></td></tr>
+              <tr><td rowspan="3" style="font-weight:800;border-right:3px solid var(--purple);vertical-align:middle">Languages</td><td>English</td><td>A. Ochieng</td><td>M. Njeri</td><td style="color:var(--green-dark);font-weight:800">3/3</td><td><div class="mini-bar"><div class="mini-fill cov-high" style="width:78%"></div></div> 78%</td><td><span class="sbadge sb-complete">Complete</span></td></tr>
+              <tr><td>Kiswahili</td><td>B. Adhiambo</td><td>M. Njeri</td><td style="color:var(--green-dark);font-weight:800">2/2</td><td><div class="mini-bar"><div class="mini-fill cov-high" style="width:66%"></div></div> 66%</td><td><span class="sbadge sb-complete">Complete</span></td></tr>
+              <tr><td>French</td><td>C. Mwenda</td><td>M. Njeri</td><td style="color:var(--amber);font-weight:800">1/1</td><td><div class="mini-bar"><div class="mini-fill cov-mid" style="width:50%"></div></div> 50%</td><td><span class="sbadge sb-inreview">In Review</span></td></tr>
+              <tr><td rowspan="2" style="font-weight:800;border-right:3px solid var(--purple);vertical-align:middle">Humanities</td><td>History</td><td>P. Kariuki</td><td>S. Otieno</td><td style="color:var(--green-dark);font-weight:800">2/2</td><td><div class="mini-bar"><div class="mini-fill cov-high" style="width:60%"></div></div> 60%</td><td><span class="sbadge sb-complete">Complete</span></td></tr>
+              <tr><td>Geography</td><td>L. Waweru</td><td>S. Otieno</td><td style="color:var(--red);font-weight:800">0/2</td><td><div class="mini-bar"><div class="mini-fill cov-low" style="width:20%"></div></div> 20%</td><td><span class="sbadge sb-missing">Missing</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DEPARTMENTS ══ -->
+    <div id="pDepts" class="p-section">
+      <div class="p-section-title" style="margin-bottom:16px"><i class="fas fa-layer-group" style="color:#059669"></i> Department Health</div>
+      <div class="dept-health-grid">
+        <div class="dept-card" style="border-left-color:var(--purple)">
+          <div class="dept-card-title">Sciences &amp; Mathematics</div>
+          <div class="dept-card-meta">HOD: Mr. James Kamau &nbsp;·&nbsp; 9 teachers</div>
+          <div class="cov-bar-bg" style="margin-bottom:6px"><div class="cov-bar cov-mid" style="width:58%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slate)"><span>Overall coverage: <b style="color:var(--amber)">58%</b></span><span>4 subjects</span></div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+            <span class="sbadge sb-complete">Math ✓</span><span class="sbadge sb-inreview">Physics</span>
+            <span class="sbadge sb-incomplete">Chemistry</span><span class="sbadge sb-incomplete">Biology</span>
+          </div>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--pink)">
+          <div class="dept-card-title">Languages</div>
+          <div class="dept-card-meta">HOD: Ms. Mary Njeri &nbsp;·&nbsp; 5 teachers</div>
+          <div class="cov-bar-bg" style="margin-bottom:6px"><div class="cov-bar cov-high" style="width:72%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slate)"><span>Overall coverage: <b style="color:var(--green-dark)">72%</b></span><span>3 subjects</span></div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+            <span class="sbadge sb-complete">English ✓</span><span class="sbadge sb-complete">Kiswahili ✓</span><span class="sbadge sb-inreview">French</span>
+          </div>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--amber)">
+          <div class="dept-card-title">Humanities</div>
+          <div class="dept-card-meta">HOD: Mr. Stephen Otieno &nbsp;·&nbsp; 4 teachers</div>
+          <div class="cov-bar-bg" style="margin-bottom:6px"><div class="cov-bar cov-low" style="width:40%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--slate)"><span>Overall coverage: <b style="color:var(--red)">40%</b></span><span>2 subjects</span></div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+            <span class="sbadge sb-complete">History ✓</span><span class="sbadge sb-missing">Geography ✗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SYLLABUS ══ -->
+    <div id="pSyllabus" class="p-section">
+      <div class="p-section-title" style="margin-bottom:16px"><i class="fas fa-chart-pie" style="color:var(--red)"></i> School-Wide Syllabus Coverage</div>
+      <div style="background:white;border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--slate);margin-bottom:16px"><i class="fas fa-info-circle" style="color:var(--purple)"></i> Coverage = topics taught ÷ topics set by HOS per subject &amp; class group</div>
+        <div class="cov-item"><div class="cov-label"><span>English</span><span style="color:var(--green-dark);font-weight:800">78%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:78%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Mathematics</span><span style="color:var(--green-dark);font-weight:800">70%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:70%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Kiswahili</span><span style="color:var(--green-dark);font-weight:800">66%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:66%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Physics</span><span style="color:var(--green-dark);font-weight:800">64%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:64%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>History</span><span style="color:var(--green-dark);font-weight:800">60%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-high" style="width:60%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Chemistry</span><span style="color:var(--amber);font-weight:800">52%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:52%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>French</span><span style="color:var(--amber);font-weight:800">50%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:50%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Biology</span><span style="color:var(--amber);font-weight:800">45%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-mid" style="width:45%"></div></div></div>
+        <div class="cov-item"><div class="cov-label"><span>Geography</span><span style="color:var(--red);font-weight:800">20%</span></div><div class="cov-bar-bg"><div class="cov-bar cov-low" style="width:20%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ══ BACKUP ══ -->
+    <div id="pBackup" class="p-section">
+      <div class="p-section-title" style="margin-bottom:16px"><i class="fas fa-database" style="color:#16a34a"></i> Data Backup</div>
+      <div style="background:white;border-radius:16px;padding:24px;box-shadow:var(--shadow);border:1px solid var(--border)">
+        <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap">
+          <div style="flex:1;min-width:200px">
+            <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px"><i class="fas fa-shield-alt" style="color:#22c55e;margin-right:6px"></i>Download School Backup</div>
+            <div style="font-size:12px;color:var(--slate);line-height:1.7">Downloads a complete backup of all school records, staff, and subjects as a JSON file. Keep this safe — it can be used to restore data if anything goes wrong.</div>
+            <div style="margin-top:10px;font-size:11px;color:#94a3b8"><i class="fas fa-info-circle"></i> Recommended: download at least once a week.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:160px">
+            <button onclick="doBackup()" style="padding:13px 20px;border-radius:12px;border:none;background:linear-gradient(135deg,#22c55e,#16a34a);color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(34,197,94,.3)"><i class="fas fa-download"></i> Download Backup</button>
+            <div id="backupStatus" style="font-size:11px;color:var(--slate);text-align:center"></div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div style="font-size:12px;color:#94a3b8"><i class="fas fa-clock" style="margin-right:4px"></i>Last backup: <span id="lastBackupTime">Never</span></div>
+          <div style="font-size:11px;color:#94a3b8"><i class="fas fa-lock" style="margin-right:3px;color:#22c55e"></i>Contains: Records · Staff · Subjects · Schools</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:40px"></div>
+  </div>
+</div>
+
+</div><!-- /mainApp -->
+
+<!-- REMARK MODAL -->
+<div class="modal-overlay" id="remarkModal">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <h3><i class="fas fa-comment-dots"></i> Remark — <span id="remarkLabel"></span></h3>
+      <button class="btn-xcard" onclick="closeModal('remarkModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg" style="margin-bottom:14px">
+        <label class="fg-label"><i class="fas fa-tag"></i> Mark As</label>
+        <select class="inp" id="remarkStatus">
+          <option>Reviewed — Satisfactory</option>
+          <option>Reviewed — Needs Improvement</option>
+          <option>Forwarded to HOD</option>
+        </select>
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label class="fg-label"><i class="fas fa-comment"></i> Remark</label>
+        <textarea class="inp" id="remarkText" rows="4">Good coverage. Ensure students complete exercises before next lesson. Approved. ✓</textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-mcancel" onclick="closeModal('remarkModal')">Cancel</button>
+      <button class="btn-msave" onclick="saveRemark()"><i class="fas fa-save"></i> Save Remark</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD STAFF MODAL -->
+<div class="modal-overlay" id="addStaffModal">
+  <div class="modal-box" style="max-width:500px">
+    <div class="modal-hdr">
+      <h3><i class="fas fa-user-plus"></i> Add New Staff Member</h3>
+      <button class="btn-xcard" onclick="closeModal('addStaffModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row-2">
+        <div class="fg"><label class="fg-label"><i class="fas fa-user"></i> First Name *</label><input class="inp" id="sfFirst" placeholder="e.g. John" oninput="updateUsername()"></div>
+        <div class="fg"><label class="fg-label"><i class="fas fa-user"></i> Last Name *</label><input class="inp" id="sfLast" placeholder="e.g. Kamau" oninput="updateUsername()"></div>
+      </div>
+      <div class="fg"><label class="fg-label"><i class="fas fa-phone"></i> Phone Number *</label><input class="inp" id="sfPhone" placeholder="e.g. 0712345678" type="tel"></div>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-at"></i> Username (auto-generated)</label>
+        <input class="inp" id="sfUsername" readonly placeholder="Enter names above to generate" style="font-family:monospace;background:#f8faff;color:var(--purple);cursor:default">
+        <div style="font-size:11px;color:var(--purple);margin-top:5px;font-weight:600"><i class="fas fa-info-circle"></i> Share this with the staff member so they can log in.</div>
+      </div>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-id-badge"></i> Role *</label>
+        <select class="inp" id="sfRole" onchange="onRoleChange()">
+          <option value="">— Select role —</option>
+          <option value="teacher">Teacher</option>
+          <option value="hos">HOS (Head of Subject)</option>
+          <option value="hod">HOD (Head of Department)</option>
+        </select>
+      </div>
+      <div id="sfSubjWrap" style="display:none">
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-book"></i> Subject *</label>
+          <select class="inp"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>English</option><option>Kiswahili</option><option>History</option></select>
+        </div>
+      </div>
+      <div id="sfDeptWrap" style="display:none">
+        <div class="fg">
+          <label class="fg-label"><i class="fas fa-layer-group"></i> Department *</label>
+          <select class="inp"><option>Sciences &amp; Mathematics</option><option>Languages</option><option>Humanities</option><option>Technicals</option></select>
+        </div>
+      </div>
+      <div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px;font-size:12px;color:#4338ca;line-height:1.6;margin-bottom:6px">
+        <i class="fas fa-info-circle"></i> The staff member will be prompted to <strong>set their own password</strong> on first login.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-mcancel" onclick="closeModal('addStaffModal')">Cancel</button>
+      <button class="btn-msave" onclick="saveNewStaff()"><i class="fas fa-user-plus"></i> Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE TOPICS MODAL -->
+<div class="modal-overlay" id="manageTopicsModal">
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-hdr" style="background:linear-gradient(135deg,#d97706,#b45309)">
+      <h3><i class="fas fa-list-ol"></i> Manage Topics — Mathematics</h3>
+      <button class="btn-xcard" onclick="closeModal('manageTopicsModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--slate);margin-bottom:14px">Set the topics for each class. Teachers select from these when submitting records.</p>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-users"></i> Class</label>
+        <select class="inp"><option>Form 3A</option><option>Form 3B</option><option>Form 4A</option><option>Form 4B</option></select>
+      </div>
+      <div class="fg">
+        <label class="fg-label"><i class="fas fa-list"></i> Topics (one per line)</label>
+        <textarea class="inp" rows="7">Quadratic Equations
+Trigonometry
+Logarithms & Indices
+Linear Programming
+Probability
+Statistics
+Vectors
+Matrices</textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-mcancel" onclick="closeModal('manageTopicsModal')">Cancel</button>
+      <button class="btn-msave" style="background:linear-gradient(135deg,#d97706,#b45309)" onclick="saveTopics()"><i class="fas fa-save"></i> Save Topics</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const CREDS = {
+  teacher:   {u:'gokoth@demo001',  p:'pass123'},
+  hos:       {u:'fwanjiku@demo001',p:'pass123'},
+  hod:       {u:'jkamau@demo001',  p:'pass123'},
+  principal: {u:'smaina@demo001',  p:'pass123'},
+  deputy:    {u:'dmugo@demo001',   p:'pass123'}
+};
+
+const ALL_CARDS = ['newRecordCard','tMyRecordsCard','tRemarksCard','tCoverageCard','hosOwnRecordCard','hosMyRecordsCard','hodOwnRecordCard','hodMyRecordsCard'];
+
+// ── Navigation ──
+function showLogin(role) {
+  $('landingPage').style.display = 'none';
+  $('mainApp').style.display = 'block';
+  clearScreens();
+  const map = {teacher:'loginTeacher',hos:'loginHos',hod:'loginHod',principal:'loginPrincipal',deputy:'loginDeputy'};
+  $(map[role]).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function loginAs(role) {
+  const fields = {teacher:{u:'tUser',p:'tPass'},hos:{u:'hosUser',p:'hosPass'},hod:{u:'hodUser',p:'hodPass'},principal:{u:'pUser',p:'pPass'},deputy:{u:'depUser',p:'depPass'}};
+  const f = fields[role];
+  const uv = $(f.u) ? $(f.u).value.trim() : '';
+  const pv = $(f.p) ? $(f.p).value : '';
+  if (uv !== CREDS[role].u || pv !== CREDS[role].p) {
+    toast('Invalid credentials. Use the demo hint above.','warn'); return;
+  }
+  clearScreens();
+  const names = {teacher:'Mr. George Okoth',hos:'Ms. Faith Wanjiku',hod:'Mr. James Kamau',principal:'Dr. Samuel Maina',deputy:'Ms. Diana Mugo'};
+
+  if (role === 'teacher') {
+    $('teacherDashboard').classList.add('active');
+  } else if (role === 'hos') {
+    $('hosDashboard').classList.add('active');
+  } else if (role === 'hod') {
+    $('hodDashboard').classList.add('active');
+  } else if (role === 'principal' || role === 'deputy') {
+    $('principalDashboard').classList.add('active');
+    const dep = role === 'deputy';
+    $('pRoleLabel').textContent = dep ? 'Deputy Principal' : 'Principal';
+    $('pWelcomeName').textContent = dep ? 'Ms. Diana Mugo' : 'Dr. Samuel Maina';
+    $('pHeaderAvatar').innerHTML = `<i class="fas fa-${dep ? 'user-tie' : 'school'}"></i>`;
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Welcome back, ' + names[role] + '! 👋','success');
+}
+
+function goLanding() {
+  $('mainApp').style.display = 'none';
+  $('landingPage').style.display = 'block';
+  clearScreens();
+  closePSection();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function clearScreens() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+}
+
+// ── Dashboard cards ──
+function toggleCard(id) {
+  const el = $(id); if (!el) return;
+  const wasVisible = el.style.display === 'block';
+  ALL_CARDS.forEach(cid => { const c = $(cid); if (c) c.style.display = 'none'; });
+  if (!wasVisible) {
+    el.style.display = 'block';
+    setTimeout(() => el.scrollIntoView({behavior:'smooth',block:'nearest'}), 60);
+  }
+}
+
+function closeCard(id) {
+  const el = $(id); if (el) el.style.display = 'none';
+}
+
+function openNewRecord() {
+  ALL_CARDS.forEach(cid => { const c = $(cid); if (c) c.style.display = 'none'; });
+  const card = $('newRecordCard');
+  card.style.display = 'block';
+  setTimeout(() => card.scrollIntoView({behavior:'smooth',block:'nearest'}), 60);
+}
+
+// ── Curriculum toggle ──
+function setCurr(mode) {
+  if (mode === '844') {
+    $('form844').style.display = 'block';
+    $('formCBC').style.display = 'none';
+    $('btn844').className = 'curr-btn a844';
+    $('btnCBC').className = 'curr-btn';
+  } else {
+    $('form844').style.display = 'none';
+    $('formCBC').style.display = 'block';
+    $('btn844').className = 'curr-btn';
+    $('btnCBC').className = 'curr-btn acbc';
+  }
+}
+
+// ── Subject selection ──
+function selectSubj(el, subj) {
+  document.querySelectorAll('#tSubjPills .spill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  toast('Subject: ' + subj, 'info');
+}
+
+function selectSubj2(el) {
+  el.closest('.subj-pills').querySelectorAll('.spill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  toast('Subject: ' + el.textContent, 'info');
+}
+
+// ── Add lesson row ──
+function addRow(tbodyId, color) {
+  const tbody = $(tbodyId); if (!tbody) return;
+  const n = tbody.querySelectorAll('tr').length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><input style="border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;width:100%;outline:none;font-family:inherit;color:${color};font-weight:700" placeholder="Lesson No." value="Lesson ${n}"></td>`
+    + `<td><input class="sub" style="border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;width:100%;outline:none;font-family:inherit" placeholder="Subtopic…"></td>`;
+  tbody.appendChild(tr);
+  toast('Row added','info');
+}
+
+// ── Form actions ──
+function saveDraft() {
+  toast('Draft saved successfully ✓','success');
+}
+
+function submitRecord() {
+  toast('Record submitted successfully ✓','success');
+  ['newRecordCard','hosOwnRecordCard','hodOwnRecordCard'].forEach(closeCard);
+}
+
+// ── HOS week tabs ──
+function setHosWeek(el, wk) {
+  document.querySelectorAll('#hosTabs .wtab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  toast('Week ' + wk + ' records loaded','info');
+}
+
+// ── HOS: mark all reviewed ──
+function markAllReviewed() {
+  document.querySelectorAll('#hosDashboard .sbadge.sb-pending').forEach(b => {
+    b.className = 'sbadge sb-reviewed'; b.textContent = 'reviewed';
+  });
+  toast('All records marked as Reviewed ✓','success');
+}
+
+// ── HOD subject + week ──
+function hodSelectSubj(el, subj) {
+  document.querySelectorAll('#hodSubjBtns .subj-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  $('hodSubjTitle').textContent = subj + ' — Week 7';
+  toast('Showing ' + subj,'info');
+}
+
+function setHodWeek(el, wk) {
+  document.querySelectorAll('#hodWeekTabs .wtab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const subj = document.querySelector('#hodSubjBtns .subj-btn.active');
+  const subjName = subj ? subj.textContent : 'Subject';
+  $('hodSubjTitle').textContent = subjName + (wk === 'all' ? ' — All Weeks' : ' — Week ' + wk);
+  toast(wk === 'all' ? 'Showing all weeks' : 'Week ' + wk,'info');
+}
+
+// ── Remark modal ──
+function openRemark(teacher, cls, topic) {
+  $('remarkLabel').textContent = teacher + ' · ' + cls + ' · ' + topic;
+  $('remarkModal').classList.add('open');
+  setTimeout(() => { const t = $('remarkText'); if (t) t.focus(); }, 200);
+}
+
+function saveRemark() {
+  const txt = $('remarkText').value.trim();
+  if (!txt) { toast('Please enter a remark','warn'); return; }
+  closeModal('remarkModal');
+  toast('Remark saved ✓','success');
+}
+
+// ── Add Staff modal ──
+function openAddStaffModal() { $('addStaffModal').classList.add('open'); }
+
+function updateUsername() {
+  const f = ($('sfFirst').value || '').trim().toLowerCase().replace(/\s+/g,'');
+  const l = ($('sfLast').value  || '').trim().toLowerCase().replace(/\s+/g,'');
+  $('sfUsername').value = (f && l) ? (f[0] + l + '@demo001') : '';
+}
+
+function onRoleChange() {
+  const r = $('sfRole').value;
+  $('sfSubjWrap').style.display = (r === 'teacher' || r === 'hos') ? 'block' : 'none';
+  $('sfDeptWrap').style.display = r === 'hod' ? 'block' : 'none';
+}
+
+function saveNewStaff() {
+  const fn = $('sfFirst').value.trim(), ln = $('sfLast').value.trim();
+  const ph = $('sfPhone').value.trim(), rl = $('sfRole').value;
+  if (!fn || !ln || !ph || !rl) { toast('Please fill in all required fields','warn'); return; }
+  closeModal('addStaffModal');
+  toast('Account created for ' + fn + ' ' + ln + ' ✓','success');
+}
+
+// ── Manage Topics ──
+function openManageTopics() { $('manageTopicsModal').classList.add('open'); }
+
+function saveTopics() {
+  closeModal('manageTopicsModal');
+  toast('Topics saved ✓','success');
+}
+
+// ── Modal helper ──
+function closeModal(id) { $(id).classList.remove('open'); }
+
+// ── Principal sections ──
+function showPSection(id) {
+  document.querySelectorAll('.p-section').forEach(s => s.classList.remove('open'));
+  $(id).classList.add('open');
+  $('pBackBar').style.display = 'block';
+  setTimeout(() => $(id).scrollIntoView({behavior:'smooth',block:'start'}), 60);
+}
+
+function closePSection() {
+  document.querySelectorAll('.p-section').forEach(s => s.classList.remove('open'));
+  const bb = $('pBackBar'); if (bb) bb.style.display = 'none';
+}
+
+// ── Backup ──
+function doBackup() {
+  $('backupStatus').textContent = 'Preparing backup…';
+  setTimeout(() => {
+    const data = {
+      school: 'Demo Secondary School', code: 'DEMO-001',
+      exportDate: new Date().toISOString(),
+      records: 186, staff: 25,
+      note: 'Demo backup — real backup contains full Firestore data'
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'phusmart_backup_demo.json';
+    a.click();
+    $('backupStatus').textContent = '✓ Backup downloaded';
+    $('lastBackupTime').textContent = new Date().toLocaleString();
+    toast('Backup downloaded ✓','success');
+  }, 800);
+}
+
+// ── Print / Export ──
+function doPrint() {
+  toast('Opening print preview…','info');
+  setTimeout(() => window.print(), 600);
+}
+
+function doExport() {
+  toast('Preparing CSV export…','info');
+  setTimeout(() => {
+    const csv = 'Week,Teacher,Class,Subject,Topic,Status\n'
+      + '7,G. Okoth,Form 3A,Mathematics,Trigonometry,Pending\n'
+      + '7,G. Okoth,Form 3B,Mathematics,Logarithms,Done\n'
+      + '7,A. Mwenda,Form 3C,Mathematics,Linear Programming,Reviewed\n'
+      + '7,A. Kamau,Form 4A,Mathematics,Probability,Reviewed\n'
+      + '7,A. Kamau,Form 4B,Mathematics,Statistics II,Forwarded';
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'phusmart_records_wk7.csv';
+    a.click();
+    toast('CSV downloaded ✓','success');
+  }, 800);
+}
+
+// ── Toast ──
+let _toastTimer;
+function toast(msg, type = 'info') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast toast-' + type;
+  t.style.display = 'block';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3400);
+}
+
+// ── Enter key to login ──
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const active = document.querySelector('.screen.active');
+  if (!active) return;
+  const map = {loginTeacher:'teacher',loginHos:'hos',loginHod:'hod',loginPrincipal:'principal',loginDeputy:'deputy'};
+  if (map[active.id]) loginAs(map[active.id]);
+});
+
+// ── Close modals on backdrop click ──
+document.addEventListener('click', e => {
+  ['remarkModal','addStaffModal','manageTopicsModal'].forEach(id => {
+    if (e.target && e.target.id === id) closeModal(id);
+  });
+});
+</script>
+</body>
+</html>
